@@ -68,8 +68,8 @@ public class TestData {
         Project project = new Project();
         project.setName("Gløshaugen");
         project.setDescription("Gløshaugen campus skal utvides");
-        project.setLatitude(63.419786f);
-        project.setLongitude(10.401809f);
+        project.setLatitude(63.417056f);
+        project.setLongitude(10.402764f);
         session.save(project);
 
         createProjectTasks2(session, project);
