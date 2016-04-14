@@ -1,7 +1,7 @@
 package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.TestData;
-import no.ntnu.mikaelr.model.dto.outgoing.UserOutgoing;
+import no.ntnu.mikaelr.model.dto.outgoing.UserOut;
 import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,25 +20,25 @@ public class Controller {
     private UserDao userDao;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<UserOutgoing> getFriendships() {
+    public ResponseEntity<UserOut> getFriendships() {
 
-        UserOutgoing mikael = new UserOutgoing();
+        UserOut mikael = new UserOut();
         mikael.setId(1);
         mikael.setUsername("Mikael");
 
-        return new ResponseEntity<UserOutgoing>(mikael, HttpStatus.OK);
+        return new ResponseEntity<UserOut>(mikael, HttpStatus.OK);
     }
 
 
     @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public ResponseEntity<UserOutgoing> testAuth() {
+    public ResponseEntity<UserOut> testAuth() {
 
-        UserOutgoing mikael = new UserOutgoing();
+        UserOut mikael = new UserOut();
         mikael.setId(1);
         mikael.setUsername("Mikael");
 
-        return new ResponseEntity<UserOutgoing>(mikael, HttpStatus.OK);
+        return new ResponseEntity<UserOut>(mikael, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/createTestData", method = RequestMethod.GET)

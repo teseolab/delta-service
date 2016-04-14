@@ -2,10 +2,7 @@ package no.ntnu.mikaelr.beans;
 
 import no.ntnu.mikaelr.TestData;
 import no.ntnu.mikaelr.security.AuthenticationSuccessHandlerImpl;
-import no.ntnu.mikaelr.service.dao.ProjectDao;
-import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
-import no.ntnu.mikaelr.service.dao.TaskDao;
-import no.ntnu.mikaelr.service.dao.UserDao;
+import no.ntnu.mikaelr.service.dao.*;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +33,11 @@ public class BeanConfig {
     @Bean
     public ProjectResponseDao projectResponseDao() {
         return new ProjectResponseDao();
+    }
+
+    @Bean
+    public SuggestionDao suggestionDao() {
+        return new SuggestionDao();
     }
 
     @Bean

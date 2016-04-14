@@ -1,11 +1,9 @@
 package no.ntnu.mikaelr.model.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "projects")
@@ -22,6 +20,7 @@ public class Project {
     // Relations -------------------------------------------------------------------------------------------------------
 
     private List<Task> tasks;
+    private List<Suggestion> suggestions;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -64,6 +63,12 @@ public class Project {
         return tasks;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    @JsonManagedReference
+    public List<Suggestion> getSuggestions() {
+        return suggestions;
+    }
+
     // Attribute setters -----------------------------------------------------------------------------------------------
 
     public void setId(Integer id) {
@@ -90,5 +95,9 @@ public class Project {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setSuggestions(List<Suggestion> suggestions) {
+        this.suggestions = suggestions;
     }
 }

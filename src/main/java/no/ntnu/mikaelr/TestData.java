@@ -1,13 +1,12 @@
 package no.ntnu.mikaelr;
 
-import no.ntnu.mikaelr.model.entities.Project;
-import no.ntnu.mikaelr.model.entities.Task;
-import no.ntnu.mikaelr.model.entities.User;
-import no.ntnu.mikaelr.model.entities.UserRole;
+import no.ntnu.mikaelr.model.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Calendar;
 
 public class TestData {
 
@@ -17,30 +16,53 @@ public class TestData {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private User user;
+    private Project project;
+
     public void initializeTestData() {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        createUser(session);
-        createProject(session);
+        user = createUser(session);
+
+        project = createProject(session);
         createProject2(session);
         createProject3(session);
+
+        createSuggestionWithComment(session);
 
         session.getTransaction().commit();
         session.close();
 
     }
 
-    private void createProject(Session session) {
+    private void createSuggestionWithComment(Session session) {
+        Suggestion suggestion = new Suggestion();
+        suggestion.setTitle("Vedlikehold av gamle bygninger");
+        suggestion.setDetails("Jeg syntes flere av bygningene på Nyhavna har en viss sjarm over seg, og som burde bevares. Det er derfor trist å se at flere bygninger er i dårlig stand. Det burde brukes mer ressurser på å holde disse bygningene vedlike.");
+        suggestion.setDate(Calendar.getInstance().getTime());
+        suggestion.setUser(user);
+        suggestion.setProject(project);
+        session.save(suggestion);
+
+        Comment comment = new Comment();
+        comment.setDate(Calendar.getInstance().getTime());
+        comment.setUser(user);
+        comment.setComment("Jeg syntes også at flere av bygningene har en karakter som er verdt å ta vare på :)");
+        comment.setSuggestion(suggestion);
+        session.save(comment);
+    }
+
+    private Project createProject(Session session) {
         Project project = new Project();
         project.setName("Nyhavna");
         project.setDescription("På Nyhavna er det et betydelig utbyggingspotensial som det er naturlig å vurdere opp mot vedtatte byutviklingsstrategier. Samtidig kan det være viktig å ivareta Nyhavnas rolle som havn med plass til virksomheter som naturlig hører hjemme i havneområdet.");
         project.setLatitude(63.439207f);
         project.setLongitude(10.419620f);
         session.save(project);
-
         createProjectTasks(session, project);
+        return project;
     }
 
     private void createProjectTasks(Session session, Project project) {
@@ -137,7 +159,7 @@ public class TestData {
 
     }
 
-    private void createUser(Session session) {
+    private User createUser(Session session) {
         User newUser = new User("Mikael", passwordEncoder.encode("123"));
         session.save(newUser);
 
@@ -145,6 +167,7 @@ public class TestData {
         userRole.setRole("USER");
         userRole.setUser(newUser);
         session.save(userRole);
+        return newUser;
     }
 
 }

@@ -1,12 +1,14 @@
 package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIncoming;
-import no.ntnu.mikaelr.model.dto.outgoing.ProjectOutgoing;
-import no.ntnu.mikaelr.model.dto.outgoing.TaskOutgoing;
+import no.ntnu.mikaelr.model.dto.outgoing.*;
+import no.ntnu.mikaelr.model.entities.Comment;
 import no.ntnu.mikaelr.model.entities.Project;
+import no.ntnu.mikaelr.model.entities.Suggestion;
 import no.ntnu.mikaelr.model.entities.Task;
 import no.ntnu.mikaelr.service.dao.ProjectDao;
 import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
+import no.ntnu.mikaelr.service.dao.SuggestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class ProjectController {
 
     @Autowired
     private ProjectResponseDao projectResponseDao;
+
+    @Autowired
+    private SuggestionDao suggestionDao;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProjectOutgoing>> getProjects() {
@@ -94,6 +99,43 @@ public class ProjectController {
     public ResponseEntity<Boolean> missionForProjectIsCompletedByUser(@PathVariable Integer projectId, @PathVariable Integer userId) {
         Boolean result = projectResponseDao.missionForProjectIsCompletedByUser(projectId, userId);
         return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{projectId}/suggestions", method = RequestMethod.GET)
+    public ResponseEntity<List<SuggestionOut>> getSuggestions(@PathVariable Integer projectId) {
+
+        List<Suggestion> suggestions = suggestionDao.getSuggestions(projectId);
+        List<SuggestionOut> suggestionsOut = new ArrayList<SuggestionOut>();
+
+        for (Suggestion suggestion : suggestions) {
+
+            SuggestionOut suggestionOut = new SuggestionOut();
+            suggestionOut.setId(suggestion.getId());
+            suggestionOut.setDate(suggestion.getDate());
+            suggestionOut.setImageUri(suggestion.getImageUri());
+            suggestionOut.setUser(new UserOut(suggestion.getUser().getId(), suggestion.getUser().getUsername()));
+            suggestionOut.setTitle(suggestion.getTitle());
+            suggestionOut.setDetails(suggestion.getDetails());
+            suggestionOut.setAgreements(suggestion.getAgreements());
+            suggestionOut.setDisagreements(suggestion.getDisagreements());
+
+            List<Comment> comments = suggestion.getComments();
+            List<CommentOut> commentsOut = new ArrayList<CommentOut>();
+
+            for (Comment comment : comments) {
+                CommentOut commentOut = new CommentOut();
+                commentOut.setId(comment.getId());
+                commentOut.setDate(comment.getDate());
+                commentOut.setUser(new UserOut(comment.getUser().getId(), comment.getUser().getUsername()));
+                commentOut.setComment(comment.getComment());
+                commentsOut.add(commentOut);
+            }
+
+            suggestionOut.setComments(commentsOut);
+            suggestionsOut.add(suggestionOut);
+        }
+
+        return new ResponseEntity<List<SuggestionOut>>(suggestionsOut, HttpStatus.OK);
     }
 
 }

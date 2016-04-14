@@ -1,15 +1,20 @@
 package no.ntnu.mikaelr.model.dto.outgoing;
 
-public class UserOutgoing {
+public class UserOut {
 
     private int id;
     private String username;
-    private String password;
+    private String password; //TODO: Remove password?
 
-    public UserOutgoing() {
+    public UserOut() {
     }
 
-    public UserOutgoing(int id, String username, String password) {
+    public UserOut(int id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
+    public UserOut(int id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
