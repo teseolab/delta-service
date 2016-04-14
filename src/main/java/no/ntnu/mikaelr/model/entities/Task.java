@@ -1,5 +1,6 @@
 package no.ntnu.mikaelr.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import no.ntnu.mikaelr.TaskType;
 
 import javax.persistence.*;
@@ -64,6 +65,7 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     public Project getProject() {
         return project;
     }

@@ -1,7 +1,10 @@
 package no.ntnu.mikaelr.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,7 +21,7 @@ public class Project {
 
     // Relations -------------------------------------------------------------------------------------------------------
 
-    private Set<Task> tasks;
+    private List<Task> tasks;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -56,7 +59,8 @@ public class Project {
     // Relation getters ------------------------------------------------------------------------------------------------
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-    public Set<Task> getTasks() {
+    @JsonManagedReference
+    public List<Task> getTasks() {
         return tasks;
     }
 
@@ -84,7 +88,7 @@ public class Project {
 
     // Relation setters ------------------------------------------------------------------------------------------------
 
-    public void setTasks(Set<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 }

@@ -34,17 +34,21 @@ public class ProjectDao {
 
         Project project = session.get(Project.class, projectId);
 
+        if (project != null) {
+            Hibernate.initialize(project.getTasks());
+        }
+
         session.getTransaction().commit();
         session.close();
         return project;
     }
 
-    public Set<Task> getTasks(Integer projectId) {
+    public List<Task> getTasks(Integer projectId) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Project project = session.get(Project.class, projectId);
-        Set<Task> tasks = project.getTasks();
+        List<Task> tasks = project.getTasks();
 
         if (tasks.size() > 0) {
             Hibernate.initialize(tasks);

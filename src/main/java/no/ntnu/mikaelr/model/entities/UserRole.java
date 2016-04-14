@@ -1,5 +1,7 @@
 package no.ntnu.mikaelr.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -32,6 +34,7 @@ public class UserRole {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     public User getUser() {
         return this.user;
     }

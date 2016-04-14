@@ -43,6 +43,10 @@ public class UserDao {
 
         User user = session.get(User.class, userId);
 
+        if (user != null) {
+            Hibernate.initialize(user.getRoles());
+        }
+
         session.getTransaction().commit();
         session.close();
 

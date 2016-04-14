@@ -1,5 +1,7 @@
 package no.ntnu.mikaelr.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,6 +36,7 @@ public class User {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonManagedReference
     public Set<UserRole> getRoles() {
         return roles;
     }

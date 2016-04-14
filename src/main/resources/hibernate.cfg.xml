@@ -33,6 +33,7 @@
         <mapping class="no.ntnu.mikaelr.model.entities.User"/>
         <mapping class="no.ntnu.mikaelr.model.entities.UserRole"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Project"/>
+        <mapping class="no.ntnu.mikaelr.model.entities.ProjectResponse"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Task"/>
 
     </session-factory>
