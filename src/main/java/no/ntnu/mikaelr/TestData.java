@@ -51,7 +51,7 @@ public class TestData {
         task1.setLatitude(63.439724f);
         task1.setLongitude(10.415015f);
         task1.setHint("Følg Styrmannsgata ut mot bryggen.");
-        String[] taskDescriptions = {"Dette er en fin plass", "Dette burde være et friluftsområde åpent for alle", "Området burde være forebeholdt industri."};
+        String[] taskDescriptions = {"Dette er en fin plass.", "Dette burde være et friluftsområde åpent for alle.", "Området burde være forebeholdt industri."};
         task1.setDescriptions(taskDescriptions);
         session.save(task1);
 
@@ -71,8 +71,8 @@ public class TestData {
         Project project = new Project();
         project.setName("Gløshaugen");
         project.setDescription("Gløshaugen campus skal utvides");
-        project.setLatitude(63.416957f);
-        project.setLongitude(10.402324f);
+        project.setLatitude(63.419676f);
+        project.setLongitude(10.401622f);
         session.save(project);
 
         createProjectTasks2(session, project);
@@ -83,20 +83,20 @@ public class TestData {
         Task task1 = new Task();
         task1.setProject(project);
         task1.setTaskType(TaskType.SCALE_TASK);
-        task1.setLatitude(63.416748f);
-        task1.setLongitude(10.402862f);
+        task1.setLatitude(63.419582f);
+        task1.setLongitude(10.400352f);
         task1.setHint("Gå ut på gresset til høyre.");
-        String[] taskDescriptions = {"Utsikten må bevares", "Dette burde være et friluftsområde åpent for alle", "Det burde være flere benker her."};
+        String[] taskDescriptions = {"Utsikten må bevares.", "Dette burde være et friluftsområde åpent for alle.", "Det burde være flere benker her."};
         task1.setDescriptions(taskDescriptions);
         session.save(task1);
 
         Task task2 = new Task();
         task2.setProject(project);
         task2.setTaskType(TaskType.TEXT_TASK);
-        task2.setLatitude(63.416957f);
-        task2.setLongitude(10.402324f);
+        task2.setLatitude(63.418786f);
+        task2.setLongitude(10.402683f);
         task2.setHint("Bak hovedbygget er en firkantet plen. Gå dit.");
-        String[] taskDescriptions2 = {"Det er foreslått å bygge noe her. Hva tenker du om det?."};
+        String[] taskDescriptions2 = {"Det er foreslått å bygge noe her. Hva tenker du om det?"};
         task2.setDescriptions(taskDescriptions2);
         session.save(task2);
 
@@ -104,10 +104,10 @@ public class TestData {
 
     private void createProject3(Session session) {
         Project project = new Project();
-        project.setName("Sule mastersal");
-        project.setDescription("Sule mastersal er en fin plass.");
-        project.setLatitude(63.416722f);
-        project.setLongitude(10.402879f);
+        project.setName("Trondheim Torg");
+        project.setDescription("Trondheim Torg skal fornyes. Det skal blant annet komme mange flere spiseplasser i området.");
+        project.setLatitude(63.430493f);
+        project.setLongitude(10.395041f);
         session.save(project);
 
         createProjectTasks3(session, project);
@@ -118,20 +118,20 @@ public class TestData {
         Task task1 = new Task();
         task1.setProject(project);
         task1.setTaskType(TaskType.SCALE_TASK);
-        task1.setLatitude(63.416722f);
-        task1.setLongitude(10.402879f);
-        task1.setHint("Sitt akkurat der du er.");
-        String[] taskDescriptions = {"Utsikten må bevares", "Dette burde være et friluftsområde åpent for alle", "Det burde være flere benker her."};
+        task1.setLatitude(63.430253f);
+        task1.setLongitude(10.397717f);
+        task1.setHint("Gå østover i Kongens gate mot Vår Frue kirke.");
+        String[] taskDescriptions = {"Det burde være restauranter langs denne strekningen.", "Hele strekningen burde bli omgjort til gågate", "Det burde være flere benker her."};
         task1.setDescriptions(taskDescriptions);
         session.save(task1);
 
         Task task2 = new Task();
         task2.setProject(project);
         task2.setTaskType(TaskType.TEXT_TASK);
-        task2.setLatitude(63.416722f);
-        task2.setLongitude(10.402879f);
-        task2.setHint("Du sitter jo så fint der foran den høyoppløselige skjermen.");
-        String[] taskDescriptions2 = {"Det er foreslått å bygge noe her. Hva tenker du om det?."};
+        task2.setLatitude(63.430810f);
+        task2.setLongitude(10.395941f);
+        task2.setHint("Gå tilbake til torget og opp i øvre nordre hjørne av torgsplassen.");
+        String[] taskDescriptions2 = {"Se utover torget og forestill deg et yrende folkeliv. Hva ønsker du at man skal kunne gjøre på torget?"};
         task2.setDescriptions(taskDescriptions2);
         session.save(task2);
 
