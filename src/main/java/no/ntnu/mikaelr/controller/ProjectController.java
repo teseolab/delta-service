@@ -4,7 +4,6 @@ import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIncoming;
 import no.ntnu.mikaelr.model.dto.outgoing.ProjectOutgoing;
 import no.ntnu.mikaelr.model.dto.outgoing.TaskOutgoing;
 import no.ntnu.mikaelr.model.entities.Project;
-import no.ntnu.mikaelr.model.entities.ProjectResponse;
 import no.ntnu.mikaelr.model.entities.Task;
 import no.ntnu.mikaelr.service.dao.ProjectDao;
 import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
@@ -81,14 +80,20 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/{projectId}/responses", method = RequestMethod.POST)
-    public ResponseEntity postResponse(@PathVariable Integer projectId, @RequestBody ProjectResponseIncoming incoming) {
+    public ResponseEntity<ProjectResponseIncoming> postResponse(@PathVariable Integer projectId, @RequestBody ProjectResponseIncoming incoming) {
 
         if (projectId == incoming.getProjectId()) {
             System.out.println(incoming);
             projectResponseDao.createProjectResponse(incoming);
             return new ResponseEntity<ProjectResponseIncoming>(incoming, HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ProjectResponseIncoming>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/{projectId}/mission/user/{userId}/isCompleted", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> missionForProjectIsCompletedByUser(@PathVariable Integer projectId, @PathVariable Integer userId) {
+        Boolean result = projectResponseDao.missionForProjectIsCompletedByUser(projectId, userId);
+        return new ResponseEntity<Boolean>(result, HttpStatus.OK);
     }
 
 }
