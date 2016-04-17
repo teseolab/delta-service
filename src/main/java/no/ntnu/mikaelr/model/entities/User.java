@@ -15,6 +15,8 @@ public class User {
     private String password;
 
     private Set<UserRole> roles = new HashSet<UserRole>(0);
+    private Set<Agreement> agreements;
+    private Set<Disagreement> disagreements;
 
     public User() {} // Empty constructor is needed
 
@@ -35,15 +37,25 @@ public class User {
         return username;
     }
 
+    @Column(name = "password", unique = true, nullable = false)
+    public String getPassword() {
+        return password;
+    }
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     public Set<UserRole> getRoles() {
         return roles;
     }
 
-    @Column(name = "password", unique = true, nullable = false)
-    public String getPassword() {
-        return password;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    public Set<Agreement> getAgreements() {
+        return agreements;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    public Set<Disagreement> getDisagreements() {
+        return disagreements;
     }
 
     public void setId(Integer id) {
@@ -60,5 +72,13 @@ public class User {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+    }
+
+    public void setAgreements(Set<Agreement> agreements) {
+        this.agreements = agreements;
+    }
+
+    public void setDisagreements(Set<Disagreement> disagreements) {
+        this.disagreements = disagreements;
     }
 }

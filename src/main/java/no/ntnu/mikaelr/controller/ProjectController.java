@@ -2,16 +2,16 @@ package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIncoming;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
-import no.ntnu.mikaelr.model.entities.Comment;
-import no.ntnu.mikaelr.model.entities.Project;
-import no.ntnu.mikaelr.model.entities.Suggestion;
-import no.ntnu.mikaelr.model.entities.Task;
+import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.security.SessionUser;
 import no.ntnu.mikaelr.service.dao.ProjectDao;
 import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
+import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,6 +23,9 @@ public class ProjectController {
 
     @Autowired
     private ProjectDao projectDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private ProjectResponseDao projectResponseDao;
@@ -64,23 +67,23 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/{projectId}/tasks", method = RequestMethod.GET)
-    public ResponseEntity<List<TaskOutgoing>> getTasks(@PathVariable Integer projectId) {
+    public ResponseEntity<List<TaskOut>> getTasks(@PathVariable Integer projectId) {
 
         List<Task> tasks = projectDao.getTasks(projectId);
-        List<TaskOutgoing> response = new ArrayList<TaskOutgoing>();
+        List<TaskOut> tasksOut = new ArrayList<TaskOut>();
 
         for (Task task : tasks) {
-            TaskOutgoing outgoingTask = new TaskOutgoing();
-            outgoingTask.setId(task.getId());
-            outgoingTask.setTaskType(task.getTaskType());
-            outgoingTask.setLatitude(task.getLatitude());
-            outgoingTask.setLongitude(task.getLongitude());
-            outgoingTask.setDescriptions(task.getDescriptions());
-            outgoingTask.setHint(task.getHint());
-            response.add(outgoingTask);
+            TaskOut taskOut = new TaskOut();
+            taskOut.setId(task.getId());
+            taskOut.setTaskType(task.getTaskType());
+            taskOut.setLatitude(task.getLatitude());
+            taskOut.setLongitude(task.getLongitude());
+            taskOut.setDescriptions(task.getDescriptions());
+            taskOut.setHint(task.getHint());
+            tasksOut.add(taskOut);
         }
 
-        return new ResponseEntity<List<TaskOutgoing>>(response, HttpStatus.OK);
+        return new ResponseEntity<List<TaskOut>>(tasksOut, HttpStatus.OK);
 
     }
 
@@ -104,6 +107,9 @@ public class ProjectController {
     @RequestMapping(value = "/{projectId}/suggestions", method = RequestMethod.GET)
     public ResponseEntity<List<SuggestionOut>> getSuggestions(@PathVariable Integer projectId) {
 
+        //int userId = ((SessionUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        User user = userDao.getUserById(1);
+
         List<Suggestion> suggestions = suggestionDao.getSuggestions(projectId);
         List<SuggestionOut> suggestionsOut = new ArrayList<SuggestionOut>();
 
@@ -116,22 +122,9 @@ public class ProjectController {
             suggestionOut.setUser(new UserOut(suggestion.getUser().getId(), suggestion.getUser().getUsername()));
             suggestionOut.setTitle(suggestion.getTitle());
             suggestionOut.setDetails(suggestion.getDetails());
-            suggestionOut.setAgreements(suggestion.getAgreements());
-            suggestionOut.setDisagreements(suggestion.getDisagreements());
-
-            List<Comment> comments = suggestion.getComments();
-            List<CommentOut> commentsOut = new ArrayList<CommentOut>();
-
-            for (Comment comment : comments) {
-                CommentOut commentOut = new CommentOut();
-                commentOut.setId(comment.getId());
-                commentOut.setDate(comment.getDate());
-                commentOut.setUser(new UserOut(comment.getUser().getId(), comment.getUser().getUsername()));
-                commentOut.setComment(comment.getComment());
-                commentsOut.add(commentOut);
-            }
-
-            suggestionOut.setComments(commentsOut);
+            suggestionOut.setAgreements(suggestion.getAgreements().size());
+            suggestionOut.setDisagreements(suggestion.getDisagreements().size());
+            suggestionOut.setAgrees(suggestionDao.userAgrees(suggestion, user));
             suggestionsOut.add(suggestionOut);
         }
 

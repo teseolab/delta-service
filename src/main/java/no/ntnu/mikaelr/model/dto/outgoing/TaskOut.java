@@ -2,7 +2,7 @@ package no.ntnu.mikaelr.model.dto.outgoing;
 
 import no.ntnu.mikaelr.TaskType;
 
-public class TaskOutgoing {
+public class TaskOut {
 
     private Integer id;
     private TaskType taskType;

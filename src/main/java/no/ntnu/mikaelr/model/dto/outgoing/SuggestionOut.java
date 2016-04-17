@@ -1,7 +1,6 @@
 package no.ntnu.mikaelr.model.dto.outgoing;
 
 import java.util.Date;
-import java.util.List;
 
 public class SuggestionOut {
 
@@ -12,9 +11,9 @@ public class SuggestionOut {
     private String details;
     private Integer agreements;
     private Integer disagreements;
+    private String agrees;
 
     private UserOut user;
-    private List<CommentOut> comments;
 
     public Integer getId() {
         return id;
@@ -72,6 +71,14 @@ public class SuggestionOut {
         this.disagreements = disagreements;
     }
 
+    public String getAgrees() {
+        return agrees;
+    }
+
+    public void setAgrees(String agrees) {
+        this.agrees = agrees;
+    }
+
     public UserOut getUser() {
         return user;
     }
@@ -80,11 +87,4 @@ public class SuggestionOut {
         this.user = user;
     }
 
-    public List<CommentOut> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentOut> comments) {
-        this.comments = comments;
-    }
 }

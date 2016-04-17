@@ -52,6 +52,27 @@ public class TestData {
         comment.setComment("Jeg syntes også at flere av bygningene har en karakter som er verdt å ta vare på :)");
         comment.setSuggestion(suggestion);
         session.save(comment);
+
+        Comment comment2 = new Comment();
+        comment2.setDate(Calendar.getInstance().getTime());
+        comment2.setUser(user);
+        comment2.setComment("Jeg er ikke enig i at flere av bygningene har en karakter som er verdt å ta vare på :( Jeg mener derimot at man burde rive alt sammen og bygge superkule og moderne bygg!");
+        comment2.setSuggestion(suggestion);
+        session.save(comment2);
+
+        Comment comment3 = new Comment();
+        comment3.setDate(Calendar.getInstance().getTime());
+        comment3.setUser(user);
+        comment3.setComment("Jeg syntes også at flere av bygningene har en karakter som er verdt å ta vare på :)");
+        comment3.setSuggestion(suggestion);
+        session.save(comment3);
+
+        Comment comment4 = new Comment();
+        comment4.setDate(Calendar.getInstance().getTime());
+        comment4.setUser(user);
+        comment4.setComment("Jeg er ikke enig i at flere av bygningene har en karakter som er verdt å ta vare på :( Jeg mener derimot at man burde rive alt sammen og bygge superkule og moderne bygg!");
+        comment4.setSuggestion(suggestion);
+        session.save(comment4);
     }
 
     private Project createProject(Session session) {

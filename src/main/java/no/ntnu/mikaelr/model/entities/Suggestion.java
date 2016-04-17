@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "suggestions")
@@ -17,14 +18,14 @@ public class Suggestion {
     private String imageUri;
     private String title;
     private String details;
-    private Integer agreements = 0;
-    private Integer disagreements = 0;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
     private User user;
     private Project project;
     private List<Comment> comments;
+    private Set<Agreement> agreements;
+    private Set<Disagreement> disagreements;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -59,20 +60,9 @@ public class Suggestion {
         return details;
     }
 
-    @Column(name = "agreements")
-    public Integer getAgreements() {
-        return agreements;
-    }
-
-    @Column(name = "disagreements")
-    public Integer getDisagreements() {
-        return disagreements;
-    }
-
-
     // Relation getters ------------------------------------------------------------------------------------------------
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     public User getUser() {
         return user;
@@ -84,12 +74,23 @@ public class Suggestion {
         return project;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "suggestion")
     @JsonManagedReference
     public List<Comment> getComments() {
         return comments;
     }
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion", cascade = CascadeType.MERGE)
+    @JsonManagedReference
+    public Set<Agreement> getAgreements() {
+        return agreements;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion")
+    @JsonManagedReference
+    public Set<Disagreement> getDisagreements() {
+        return disagreements;
+    }
 
     // Attribute setters -----------------------------------------------------------------------------------------------
 
@@ -113,13 +114,6 @@ public class Suggestion {
         this.details = details;
     }
 
-    public void setAgreements(Integer agreements) {
-        this.agreements = agreements;
-    }
-
-    public void setDisagreements(Integer disagreements) {
-        this.disagreements = disagreements;
-    }
 
 
     // Relation setters ------------------------------------------------------------------------------------------------
@@ -135,5 +129,13 @@ public class Suggestion {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void setAgreements(Set<Agreement> agreements) {
+        this.agreements = agreements;
+    }
+
+    public void setDisagreements(Set<Disagreement> disagreements) {
+        this.disagreements = disagreements;
     }
 }

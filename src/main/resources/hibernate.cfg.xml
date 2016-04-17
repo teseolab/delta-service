@@ -36,6 +36,8 @@
         <mapping class="no.ntnu.mikaelr.model.entities.ProjectResponse"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Task"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Suggestion"/>
+        <mapping class="no.ntnu.mikaelr.model.entities.Agreement"/>
+        <mapping class="no.ntnu.mikaelr.model.entities.Disagreement"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Comment"/>
 
     </session-factory>
