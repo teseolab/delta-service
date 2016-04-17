@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -170,8 +171,31 @@ public class SuggestionDao {
 
         session.getTransaction().commit();
         session.close();
+
+        Collections.reverse(comments);
         return comments;
 
+    }
+
+    public List<Comment> postComment(Integer suggestionId, String commentText) {
+
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Suggestion suggestion = session.get(Suggestion.class, suggestionId);
+        User user = session.get(User.class, 1); // TODO: Use real user id
+
+        Comment comment = new Comment();
+        comment.setDate(Calendar.getInstance().getTime());
+        comment.setComment(commentText);
+        comment.setSuggestion(suggestion);
+        comment.setUser(user);
+
+        session.save(comment);
+        session.getTransaction().commit();
+        session.close();
+
+        return getComments(suggestionId);
     }
 
     public Suggestion createSuggestion(SuggestionIn incoming) {
