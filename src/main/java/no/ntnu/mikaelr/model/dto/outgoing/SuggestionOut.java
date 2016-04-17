@@ -1,6 +1,10 @@
 package no.ntnu.mikaelr.model.dto.outgoing;
 
+import no.ntnu.mikaelr.model.entities.Suggestion;
+import no.ntnu.mikaelr.util.Constants;
+
 import java.util.Date;
+import java.util.Set;
 
 public class SuggestionOut {
 
@@ -9,11 +13,26 @@ public class SuggestionOut {
     private String imageUri;
     private String title;
     private String details;
-    private Integer agreements;
-    private Integer disagreements;
-    private String agrees;
+    private Integer agreements = 0;
+    private Integer disagreements = 0;
+    private String agrees = Constants.NA;
 
     private UserOut user;
+
+    public SuggestionOut() {}
+
+    public SuggestionOut(Suggestion suggestion) {
+        this.id = suggestion.getId();
+        this.date = suggestion.getDate();
+        this.imageUri = suggestion.getImageUri();
+        this.title = suggestion.getTitle();
+        this.details = suggestion.getDetails();
+        Set agreements = suggestion.getAgreements();
+        if (agreements != null) this.agreements = agreements.size();
+        Set disagreements = suggestion.getDisagreements();
+        if (disagreements != null) this.disagreements = suggestion.getDisagreements().size();
+        this.user = new UserOut(suggestion.getUser());
+    }
 
     public Integer getId() {
         return id;

@@ -1,6 +1,6 @@
 package no.ntnu.mikaelr.model.dto.incoming;
 
-public class ProjectResponseIncoming {
+public class ProjectResponseIn {
 
     private String[] response;
     private int userId;

@@ -1,14 +1,12 @@
 package no.ntnu.mikaelr.service.dao;
 
-import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIncoming;
+import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
 import no.ntnu.mikaelr.model.entities.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class ProjectResponseDao {
 
@@ -24,7 +22,7 @@ public class ProjectResponseDao {
     @Autowired
     TaskDao taskDao;
 
-    public ProjectResponse createProjectResponse(ProjectResponseIncoming incoming) {
+    public ProjectResponse createProjectResponse(ProjectResponseIn incoming) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();

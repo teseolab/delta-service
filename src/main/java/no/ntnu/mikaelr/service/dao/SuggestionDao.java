@@ -1,5 +1,6 @@
 package no.ntnu.mikaelr.service.dao;
 
+import no.ntnu.mikaelr.model.dto.incoming.SuggestionIn;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.util.Constants;
 import org.hibernate.Hibernate;
@@ -8,9 +9,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class SuggestionDao {
@@ -32,6 +36,8 @@ public class SuggestionDao {
 
         session.getTransaction().commit();
         session.close();
+
+        Collections.reverse(suggestions);
         return suggestions;
 
     }
@@ -168,4 +174,29 @@ public class SuggestionDao {
 
     }
 
+    public Suggestion createSuggestion(SuggestionIn incoming) {
+
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        String title = incoming.getTitle();
+        String details = incoming.getDetails();
+        Date date = incoming.getDate();
+        String imageUri = incoming.getImageUri();
+        int projectId = incoming.getProjectId();
+
+        Suggestion suggestion = new Suggestion(title, details, date, imageUri);
+
+        Project project = session.get(Project.class, projectId);
+        suggestion.setProject(project);
+
+        User user = session.get(User.class, 1); // TODO: Real user id
+        suggestion.setUser(user);
+
+        session.save(suggestion);
+        session.getTransaction().commit();
+        session.close();
+        return suggestion;
+
+    }
 }

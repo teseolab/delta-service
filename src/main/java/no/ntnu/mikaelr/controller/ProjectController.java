@@ -1,9 +1,8 @@
 package no.ntnu.mikaelr.controller;
 
-import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIncoming;
+import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
-import no.ntnu.mikaelr.security.SessionUser;
 import no.ntnu.mikaelr.service.dao.ProjectDao;
 import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
@@ -11,7 +10,6 @@ import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -88,14 +86,13 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/{projectId}/responses", method = RequestMethod.POST)
-    public ResponseEntity<ProjectResponseIncoming> postResponse(@PathVariable Integer projectId, @RequestBody ProjectResponseIncoming incoming) {
+    public ResponseEntity<ProjectResponseIn> postResponse(@PathVariable Integer projectId, @RequestBody ProjectResponseIn incoming) {
 
         if (projectId == incoming.getProjectId()) {
-            System.out.println(incoming);
             projectResponseDao.createProjectResponse(incoming);
-            return new ResponseEntity<ProjectResponseIncoming>(incoming, HttpStatus.OK);
+            return new ResponseEntity<ProjectResponseIn>(incoming, HttpStatus.OK);
         }
-        return new ResponseEntity<ProjectResponseIncoming>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ProjectResponseIn>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/{projectId}/mission/user/{userId}/isCompleted", method = RequestMethod.GET)

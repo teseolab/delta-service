@@ -1,10 +1,11 @@
 package no.ntnu.mikaelr.model.dto.outgoing;
 
+import no.ntnu.mikaelr.model.entities.User;
+
 public class UserOut {
 
     private int id;
     private String username;
-    private String password; //TODO: Remove password?
 
     public UserOut() {
     }
@@ -14,10 +15,9 @@ public class UserOut {
         this.username = username;
     }
 
-    public UserOut(int id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+    public UserOut(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
     }
 
     public int getId() {
@@ -36,11 +36,4 @@ public class UserOut {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

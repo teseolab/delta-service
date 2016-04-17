@@ -31,6 +31,13 @@ public class Suggestion {
 
     public Suggestion() {}
 
+    public Suggestion(String title, String details, Date date, String imageUri) {
+        this.title = title;
+        this.details = details;
+        this.date = date;
+        this.imageUri = imageUri;
+    }
+
     // Attribute getters -----------------------------------------------------------------------------------------------
 
     @Id

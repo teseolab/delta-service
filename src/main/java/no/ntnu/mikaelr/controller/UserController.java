@@ -1,6 +1,6 @@
 package no.ntnu.mikaelr.controller;
 
-import no.ntnu.mikaelr.model.dto.incoming.UserIncoming;
+import no.ntnu.mikaelr.model.dto.incoming.UserIn;
 import no.ntnu.mikaelr.model.dto.outgoing.UserOut;
 import no.ntnu.mikaelr.model.entities.User;
 import no.ntnu.mikaelr.service.dao.UserDao;
@@ -17,16 +17,16 @@ public class UserController {
     private UserDao userDao;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserOut> createUser(@RequestBody UserIncoming incomingUser) {
+    public ResponseEntity<UserOut> createUser(@RequestBody UserIn incomingUser) {
         User user = userDao.createUser(incomingUser);
-        UserOut response = new UserOut(user.getId(), user.getUsername(), user.getPassword());
-        return new ResponseEntity(response, HttpStatus.OK);
+        UserOut response = new UserOut(user);
+        return new ResponseEntity<UserOut>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity<UserOut> getUser(@PathVariable Integer userId) {
         User user = userDao.getUserById(userId);
-        UserOut response = new UserOut(user.getId(), user.getUsername(), user.getPassword());
+        UserOut response = new UserOut(user);
         return new ResponseEntity<UserOut>(response, HttpStatus.OK);
     }
 

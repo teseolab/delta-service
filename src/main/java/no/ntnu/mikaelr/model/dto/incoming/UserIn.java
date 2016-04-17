@@ -1,6 +1,6 @@
 package no.ntnu.mikaelr.model.dto.incoming;
 
-public class UserIncoming {
+public class UserIn {
 
     private String username;
     private String password;

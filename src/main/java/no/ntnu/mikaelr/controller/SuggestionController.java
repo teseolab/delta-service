@@ -1,5 +1,6 @@
 package no.ntnu.mikaelr.controller;
 
+import no.ntnu.mikaelr.model.dto.incoming.SuggestionIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
@@ -18,6 +19,13 @@ public class SuggestionController {
 
     @Autowired
     private SuggestionDao suggestionDao;
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<SuggestionOut> postSuggestion(@RequestBody SuggestionIn in) {
+        Suggestion suggestion = suggestionDao.createSuggestion(in);
+        SuggestionOut out = new SuggestionOut(suggestion);
+        return new ResponseEntity<SuggestionOut>(out, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/{suggestionId}/agree", method = RequestMethod.POST)
     public ResponseEntity postAgreement(@PathVariable Integer suggestionId) {

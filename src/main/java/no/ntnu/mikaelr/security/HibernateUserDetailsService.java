@@ -36,7 +36,7 @@ public class HibernateUserDetailsService implements UserDetailsService {
     }
 
     /*
-     * Converts a com.andreasogeirik.model.entities.UserIncoming to a org.springframework.security.core.userdetails.UserIncoming
+     * Converts a com.andreasogeirik.model.entities.UserIn to a org.springframework.security.core.userdetails.UserIn
      */
     private SessionUser buildUser(User user) {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
