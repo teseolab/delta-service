@@ -2,11 +2,13 @@ package no.ntnu.mikaelr.service.dao;
 
 import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
 import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.security.SessionUser;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class ProjectResponseDao {
 
@@ -28,7 +30,8 @@ public class ProjectResponseDao {
         session.beginTransaction();
 
         String[] response = incoming.getResponse();
-        User user = userDao.getUserById(incoming.getUserId());
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        User user = userDao.getUserById(userId);
         Project project = projectDao.getProject(incoming.getProjectId());
         Task task = taskDao.getTask(incoming.getTaskId());
 
@@ -45,12 +48,13 @@ public class ProjectResponseDao {
         return projectResponse;
     }
 
-    public boolean missionForProjectIsCompletedByUser(Integer projectId, Integer userId) {
+    public boolean missionForProjectIsCompletedByUser(Integer projectId) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Project project = projectDao.getProject(projectId);
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = userDao.getUserById(userId);
 
         Query query = session.createQuery("select count(pr) from ProjectResponse pr where project = :project and user = :user");

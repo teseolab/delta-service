@@ -2,13 +2,13 @@ package no.ntnu.mikaelr.service.dao;
 
 import no.ntnu.mikaelr.model.dto.incoming.SuggestionIn;
 import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.security.SessionUser;
 import no.ntnu.mikaelr.util.Constants;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -183,7 +183,8 @@ public class SuggestionDao {
         session.beginTransaction();
 
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
-        User user = session.get(User.class, 1); // TODO: Use real user id
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        User user = session.get(User.class, userId);
 
         Comment comment = new Comment();
         comment.setDate(Calendar.getInstance().getTime());
@@ -214,7 +215,8 @@ public class SuggestionDao {
         Project project = session.get(Project.class, projectId);
         suggestion.setProject(project);
 
-        User user = session.get(User.class, 1); // TODO: Real user id
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        User user = session.get(User.class, userId);
         suggestion.setUser(user);
 
         session.save(suggestion);

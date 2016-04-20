@@ -16,31 +16,6 @@ public class Controller {
     @Autowired
     private TestData testData;
 
-    @Autowired
-    private UserDao userDao;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<UserOut> getFriendships() {
-
-        UserOut mikael = new UserOut();
-        mikael.setId(1);
-        mikael.setUsername("Mikael");
-
-        return new ResponseEntity<UserOut>(mikael, HttpStatus.OK);
-    }
-
-
-    @PreAuthorize(value="hasAuthority('USER')")
-    @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public ResponseEntity<UserOut> testAuth() {
-
-        UserOut mikael = new UserOut();
-        mikael.setId(1);
-        mikael.setUsername("Mikael");
-
-        return new ResponseEntity<UserOut>(mikael, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/createTestData", method = RequestMethod.GET)
     public void createTestData() {
         testData.initializeTestData();

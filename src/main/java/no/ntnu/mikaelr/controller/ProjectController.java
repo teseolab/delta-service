@@ -10,6 +10,7 @@ import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ProjectController {
 
     @Autowired
     private SuggestionDao suggestionDao;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProjectOutgoing>> getProjects() {
@@ -85,6 +87,7 @@ public class ProjectController {
 
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/responses", method = RequestMethod.POST)
     public ResponseEntity<ProjectResponseIn> postResponse(@PathVariable Integer projectId, @RequestBody ProjectResponseIn incoming) {
 
@@ -95,9 +98,9 @@ public class ProjectController {
         return new ResponseEntity<ProjectResponseIn>(HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/{projectId}/mission/user/{userId}/isCompleted", method = RequestMethod.GET)
-    public ResponseEntity<Boolean> missionForProjectIsCompletedByUser(@PathVariable Integer projectId, @PathVariable Integer userId) {
-        Boolean result = projectResponseDao.missionForProjectIsCompletedByUser(projectId, userId);
+    @RequestMapping(value = "/{projectId}/mission/isCompleted", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> missionForProjectIsCompletedByUser(@PathVariable Integer projectId) {
+        Boolean result = projectResponseDao.missionForProjectIsCompletedByUser(projectId);
         return new ResponseEntity<Boolean>(result, HttpStatus.OK);
     }
 
