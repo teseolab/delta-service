@@ -24,13 +24,15 @@ public class TestData {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        user = createUser(session);
+//        createUser(session, "Steffen", "123");
 
-        project = createProject(session);
-        createProject2(session);
-        createProject3(session);
-
-        createSuggestionWithComment(session);
+//        user = createUser(session);
+//
+//        project = createProject(session);
+//        createProject2(session);
+//        createProject3(session);
+//
+//        createSuggestionWithComment(session);
 
         session.getTransaction().commit();
         session.close();
@@ -182,6 +184,17 @@ public class TestData {
 
     private User createUser(Session session) {
         User newUser = new User("Mikael", passwordEncoder.encode("123"));
+        session.save(newUser);
+
+        UserRole userRole = new UserRole();
+        userRole.setRole("USER");
+        userRole.setUser(newUser);
+        session.save(userRole);
+        return newUser;
+    }
+
+    private User createUser(Session session, String username, String password) {
+        User newUser = new User(username, passwordEncoder.encode(password));
         session.save(newUser);
 
         UserRole userRole = new UserRole();
