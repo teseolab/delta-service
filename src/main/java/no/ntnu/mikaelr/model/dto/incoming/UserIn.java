@@ -4,6 +4,7 @@ public class UserIn {
 
     private String username;
     private String password;
+    private String registerCode;
 
     public String getUsername() {
         return username;
@@ -19,5 +20,13 @@ public class UserIn {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRegisterCode() {
+        return registerCode;
+    }
+
+    public void setRegisterCode(String registerCode) {
+        this.registerCode = registerCode;
     }
 }

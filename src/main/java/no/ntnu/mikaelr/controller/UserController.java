@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -17,10 +20,20 @@ public class UserController {
     private UserDao userDao;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserOut> createUser(@RequestBody UserIn incomingUser) {
-        User user = userDao.createUser(incomingUser);
-        UserOut response = new UserOut(user);
-        return new ResponseEntity<UserOut>(response, HttpStatus.OK);
+    public ResponseEntity createUser(@RequestBody UserIn incomingUser) {
+
+        List<String> registerCodes = new ArrayList<String>();
+        registerCodes.add("alfa");
+
+        String registerCode = incomingUser.getRegisterCode();
+
+        if (registerCodes.contains(registerCode)) {
+            User user = userDao.createUser(incomingUser);
+            UserOut response = new UserOut(user);
+            return new ResponseEntity<UserOut>(response, HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
