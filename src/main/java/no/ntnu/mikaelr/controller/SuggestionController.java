@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import no.ntnu.mikaelr.model.dto.incoming.SuggestionIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.security.SessionUser;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +35,7 @@ public class SuggestionController {
     @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{suggestionId}/agree", method = RequestMethod.POST)
     public ResponseEntity postAgreement(@PathVariable Integer suggestionId) {
-        int userId = 1; //TODO: Use real user id
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         MultiValueMap<String, String> result = suggestionDao.postAgreement(suggestionId, userId);
         return new ResponseEntity(result, HttpStatus.OK);
     }
@@ -41,7 +43,7 @@ public class SuggestionController {
     @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{suggestionId}/disagree", method = RequestMethod.POST)
     public ResponseEntity postDisagreement(@PathVariable Integer suggestionId) {
-        int userId = 1; //TODO: Use real user id
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         MultiValueMap<String, String> result = suggestionDao.postDisagreement(suggestionId, userId);
         return new ResponseEntity(result, HttpStatus.OK);
     }

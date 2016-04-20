@@ -3,6 +3,7 @@ package no.ntnu.mikaelr.controller;
 import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.security.SessionUser;
 import no.ntnu.mikaelr.service.dao.ProjectDao;
 import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -107,8 +109,9 @@ public class ProjectController {
     @RequestMapping(value = "/{projectId}/suggestions", method = RequestMethod.GET)
     public ResponseEntity<List<SuggestionOut>> getSuggestions(@PathVariable Integer projectId) {
 
-        //int userId = ((SessionUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        User user = userDao.getUserById(1);
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+
+        User user = userDao.getUserById(userId);
 
         List<Suggestion> suggestions = suggestionDao.getSuggestions(projectId);
         List<SuggestionOut> suggestionsOut = new ArrayList<SuggestionOut>();
