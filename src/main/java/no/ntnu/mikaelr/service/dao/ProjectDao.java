@@ -1,7 +1,9 @@
 package no.ntnu.mikaelr.service.dao;
 
+import no.ntnu.mikaelr.model.entities.FinishedMission;
 import no.ntnu.mikaelr.model.entities.Project;
 import no.ntnu.mikaelr.model.entities.Task;
+import no.ntnu.mikaelr.model.entities.User;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -59,4 +61,19 @@ public class ProjectDao {
         return tasks;
     }
 
+    public void setMissionComplete(Integer projectId, Integer userId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Project project = session.get(Project.class, projectId);
+        User user = session.get(User.class, userId);
+
+        FinishedMission finishedMission = new FinishedMission();
+        finishedMission.setProject(project);
+        finishedMission.setUser(user);
+
+        session.save(finishedMission);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

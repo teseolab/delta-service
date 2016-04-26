@@ -100,6 +100,14 @@ public class ProjectController {
         return new ResponseEntity<ProjectResponseIn>(HttpStatus.BAD_REQUEST);
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
+    @RequestMapping(value = "/{projectId}/mission/complete", method = RequestMethod.POST)
+    public ResponseEntity setMissionComplete(@PathVariable Integer projectId) {
+        Integer userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        projectDao.setMissionComplete(projectId, userId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{projectId}/mission/isCompleted", method = RequestMethod.GET)
     public ResponseEntity<Boolean> missionForProjectIsCompletedByUser(@PathVariable Integer projectId) {
         Boolean result = projectResponseDao.missionForProjectIsCompletedByUser(projectId);

@@ -24,8 +24,6 @@ public class TestData {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-//        createUser(session, "Steffen", "123");
-
 //        user = createUser(session);
 //
 //        project = createProject(session);

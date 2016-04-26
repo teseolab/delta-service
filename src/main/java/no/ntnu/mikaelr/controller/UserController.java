@@ -1,6 +1,7 @@
 package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.model.dto.incoming.UserIn;
+import no.ntnu.mikaelr.model.dto.outgoing.HighscoreUser;
 import no.ntnu.mikaelr.model.dto.outgoing.UserOut;
 import no.ntnu.mikaelr.model.entities.User;
 import no.ntnu.mikaelr.service.dao.UserDao;
@@ -18,6 +19,35 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<HighscoreUser>> getHighscoreUsers() {
+
+        List<User> topUsers = userDao.getTopUsers();
+        List<HighscoreUser> users = new ArrayList<HighscoreUser>();
+
+        for (User user : topUsers) {
+
+            int userId = user.getId();
+
+            HighscoreUser userOut = new HighscoreUser();
+            userOut.setId(userId);
+            userOut.setUsername(user.getUsername());
+            userOut.setScore(user.getScore());
+
+            int numberOfMissions = userDao.getNumberOfMissionsCompleted(userId);
+            int numberOfSuggestionsPosted = userDao.getNumberOfSuggestionsPosted(userId);
+            int numberOfCommentsPosted = userDao.getNumberOfCommentsPosted(userId);
+
+            userOut.setNumberOfMissions(numberOfMissions);
+            userOut.setNumberOfSuggestions(numberOfSuggestionsPosted);
+            userOut.setNumberOfComments(numberOfCommentsPosted);
+
+            users.add(userOut);
+        }
+
+        return new ResponseEntity<List<HighscoreUser>>(users, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestBody UserIn incomingUser) {
