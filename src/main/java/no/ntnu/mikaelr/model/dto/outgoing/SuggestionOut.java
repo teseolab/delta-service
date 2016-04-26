@@ -31,7 +31,7 @@ public class SuggestionOut {
         if (agreements != null) this.agreements = agreements.size();
         Set disagreements = suggestion.getDisagreements();
         if (disagreements != null) this.disagreements = suggestion.getDisagreements().size();
-        this.user = new UserOut(suggestion.getUser());
+        this.user = new UserOut(suggestion.getUser().getId(), suggestion.getUser().getUsername());
     }
 
     public Integer getId() {

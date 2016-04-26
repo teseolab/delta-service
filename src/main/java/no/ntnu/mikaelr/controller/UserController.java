@@ -1,13 +1,15 @@
 package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.model.dto.incoming.UserIn;
-import no.ntnu.mikaelr.model.dto.outgoing.HighscoreUser;
 import no.ntnu.mikaelr.model.dto.outgoing.UserOut;
 import no.ntnu.mikaelr.model.entities.User;
+import no.ntnu.mikaelr.security.SessionUser;
 import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,16 +23,16 @@ public class UserController {
     private UserDao userDao;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<HighscoreUser>> getHighscoreUsers() {
+    public ResponseEntity<List<UserOut>> getHighscoreUsers() {
 
         List<User> topUsers = userDao.getTopUsers();
-        List<HighscoreUser> users = new ArrayList<HighscoreUser>();
+        List<UserOut> users = new ArrayList<UserOut>();
 
         for (User user : topUsers) {
 
             int userId = user.getId();
 
-            HighscoreUser userOut = new HighscoreUser();
+            UserOut userOut = new UserOut();
             userOut.setId(userId);
             userOut.setUsername(user.getUsername());
             userOut.setScore(user.getScore());
@@ -46,7 +48,7 @@ public class UserController {
             users.add(userOut);
         }
 
-        return new ResponseEntity<List<HighscoreUser>>(users, HttpStatus.OK);
+        return new ResponseEntity<List<UserOut>>(users, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -59,18 +61,39 @@ public class UserController {
 
         if (registerCodes.contains(registerCode)) {
             User user = userDao.createUser(incomingUser);
-            UserOut response = new UserOut(user);
+            UserOut response = new UserOut();
+            response.setId(user.getId());
+            response.setUsername(user.getUsername());
             return new ResponseEntity<UserOut>(response, HttpStatus.OK);
         }
 
         return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<UserOut> getUser(@PathVariable Integer userId) {
+    public ResponseEntity<UserOut> getSelf(@PathVariable Integer userId) {
+
+        if (userId == 0) {
+            userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        }
+
         User user = userDao.getUserById(userId);
-        UserOut response = new UserOut(user);
-        return new ResponseEntity<UserOut>(response, HttpStatus.OK);
+
+        UserOut userOut = new UserOut();
+        userOut.setId(userId);
+        userOut.setUsername(user.getUsername());
+        userOut.setScore(user.getScore());
+
+        int numberOfMissions = userDao.getNumberOfMissionsCompleted(userId);
+        int numberOfSuggestionsPosted = userDao.getNumberOfSuggestionsPosted(userId);
+        int numberOfCommentsPosted = userDao.getNumberOfCommentsPosted(userId);
+
+        userOut.setNumberOfMissions(numberOfMissions);
+        userOut.setNumberOfSuggestions(numberOfSuggestionsPosted);
+        userOut.setNumberOfComments(numberOfCommentsPosted);
+
+        return new ResponseEntity<UserOut>(userOut, HttpStatus.OK);
     }
 
 }

@@ -1,7 +1,6 @@
 package no.ntnu.mikaelr.service.dao;
 
 import no.ntnu.mikaelr.model.dto.incoming.UserIn;
-import no.ntnu.mikaelr.model.dto.outgoing.HighscoreUser;
 import no.ntnu.mikaelr.model.entities.User;
 import no.ntnu.mikaelr.model.entities.UserRole;
 import org.hibernate.*;
