@@ -1,9 +1,12 @@
 package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.model.dto.incoming.UserIn;
+import no.ntnu.mikaelr.model.dto.outgoing.LogRecordOut;
 import no.ntnu.mikaelr.model.dto.outgoing.UserOut;
+import no.ntnu.mikaelr.model.entities.LogRecord;
 import no.ntnu.mikaelr.model.entities.User;
 import no.ntnu.mikaelr.security.SessionUser;
+import no.ntnu.mikaelr.service.dao.LogRecordDao;
 import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private LogRecordDao logRecordDao;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserOut>> getHighscoreUsers() {
@@ -71,11 +77,14 @@ public class UserController {
     }
 
     @PreAuthorize(value="hasAuthority('USER')")
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<UserOut> getSelf(@PathVariable Integer userId) {
+    @RequestMapping(value = "/{userIdOrMe}", method = RequestMethod.GET)
+    public ResponseEntity<UserOut> getUser(@PathVariable String userIdOrMe) {
 
-        if (userId == 0) {
+        int userId;
+        if (userIdOrMe.equals("me")) {
             userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        } else {
+            userId = Integer.valueOf(userIdOrMe);
         }
 
         User user = userDao.getUserById(userId);
@@ -94,6 +103,22 @@ public class UserController {
         userOut.setNumberOfComments(numberOfCommentsPosted);
 
         return new ResponseEntity<UserOut>(userOut, HttpStatus.OK);
+    }
+
+    @PreAuthorize(value="hasAuthority('USER')")
+    @RequestMapping(value = "/me/logRecords", method = RequestMethod.GET)
+    public ResponseEntity getMyLogRecords() {
+
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        List<LogRecord> logRecords = logRecordDao.getLogRecords(userId);
+        List<LogRecordOut> logRecordsOut = new ArrayList<LogRecordOut>();
+
+        for (LogRecord logRecord : logRecords) {
+            logRecordsOut.add(LogRecordOut.fromLogRecord(logRecord));
+        }
+
+        return new ResponseEntity<List<LogRecordOut>>(logRecordsOut, HttpStatus.OK);
+
     }
 
 }

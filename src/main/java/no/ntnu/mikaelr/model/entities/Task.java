@@ -1,7 +1,7 @@
 package no.ntnu.mikaelr.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import no.ntnu.mikaelr.TaskType;
+import no.ntnu.mikaelr.util.TaskType;
 
 import javax.persistence.*;
 

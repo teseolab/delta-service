@@ -21,7 +21,10 @@ import java.util.List;
 public class SuggestionDao {
 
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private LogRecordDao logRecordDao;
 
     public List<Suggestion> getSuggestions(Integer projectId) {
 
@@ -51,13 +54,13 @@ public class SuggestionDao {
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
         User user = session.get(User.class, userId);
 
-        Disagreement existingDisagreement = getDisagreement(session, suggestion, user);
-        if (existingDisagreement != null)
-            session.delete(existingDisagreement);
+        deleteDisagreement(session, suggestion, user);
+        logRecordDao.deleteDisagreementLogRecord(session, suggestion, user);
 
         Agreement existingAgreement = getAgreement(session, suggestion, user);
         if (existingAgreement == null) {
             Agreement agreement = new Agreement(suggestion, user);
+            logRecordDao.logAgreement(session, suggestion, user);
             session.save(agreement);
         }
 
@@ -85,13 +88,13 @@ public class SuggestionDao {
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
         User user = session.get(User.class, userId);
 
-        Agreement existingAgreement = getAgreement(session, suggestion, user);
-        if (existingAgreement != null)
-            session.delete(existingAgreement);
+        deleteAgreement(session, suggestion, user);
+        logRecordDao.deleteAgreementLogRecord(session, suggestion, user);
 
         Disagreement existingDisagreement = getDisagreement(session, suggestion, user);
         if (existingDisagreement == null) {
             Disagreement disagreement = new Disagreement(suggestion, user);
+            logRecordDao.logDisagreement(session, suggestion, user);
             session.save(disagreement);
         }
 
@@ -109,6 +112,20 @@ public class SuggestionDao {
         result.add("disagreements", numberOfDisagreements.toString());
 
         return result;
+    }
+
+    private void deleteAgreement(Session session, Suggestion suggestion, User user) {
+        Query query = session.createQuery("delete from Agreement where suggestion = :suggestion and user = :user");
+        query.setParameter("suggestion", suggestion);
+        query.setParameter("user", user);
+        int rowsDeleted = query.executeUpdate();
+    }
+
+    private void deleteDisagreement(Session session, Suggestion suggestion, User user) {
+        Query query = session.createQuery("delete from Disagreement where suggestion = :suggestion and user = :user");
+        query.setParameter("suggestion", suggestion);
+        query.setParameter("user", user);
+        int rowsDeleted = query.executeUpdate();
     }
 
     private Agreement getAgreement(Session session, Suggestion suggestion, User user) {
@@ -177,13 +194,12 @@ public class SuggestionDao {
 
     }
 
-    public List<Comment> postComment(Integer suggestionId, String commentText) {
+    public List<Comment> postComment(Integer suggestionId, Integer userId, String commentText) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
-        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = session.get(User.class, userId);
 
         Comment comment = new Comment();
@@ -218,6 +234,8 @@ public class SuggestionDao {
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = session.get(User.class, userId);
         suggestion.setUser(user);
+
+        logRecordDao.logSuggestionPosted(session, suggestion, user);
 
         session.save(suggestion);
         session.getTransaction().commit();

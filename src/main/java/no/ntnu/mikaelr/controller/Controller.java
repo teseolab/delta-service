@@ -1,12 +1,9 @@
 package no.ntnu.mikaelr.controller;
 
-import no.ntnu.mikaelr.TestData;
-import no.ntnu.mikaelr.model.dto.outgoing.UserOut;
-import no.ntnu.mikaelr.service.dao.UserDao;
+import no.ntnu.mikaelr.util.TestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -4,10 +4,7 @@ import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.security.SessionUser;
-import no.ntnu.mikaelr.service.dao.ProjectDao;
-import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
-import no.ntnu.mikaelr.service.dao.SuggestionDao;
-import no.ntnu.mikaelr.service.dao.UserDao;
+import no.ntnu.mikaelr.service.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +30,6 @@ public class ProjectController {
 
     @Autowired
     private SuggestionDao suggestionDao;
-
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProjectOutgoing>> getProjects() {

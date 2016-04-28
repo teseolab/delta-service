@@ -5,6 +5,7 @@ import no.ntnu.mikaelr.model.dto.incoming.SuggestionIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.security.SessionUser;
+import no.ntnu.mikaelr.service.dao.LogRecordDao;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class SuggestionController {
 
     @Autowired
     private SuggestionDao suggestionDao;
+
+    @Autowired
+    private LogRecordDao logRecordDao;
 
     @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.POST)
@@ -70,7 +74,11 @@ public class SuggestionController {
     @RequestMapping(value = "/{suggestionId}/comments", method = RequestMethod.POST)
     public ResponseEntity<List<CommentOut>> postComment(@PathVariable Integer suggestionId, @RequestBody String commentText) {
 
-        List<Comment> comments = suggestionDao.postComment(suggestionId, commentText);
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+
+        List<Comment> comments = suggestionDao.postComment(suggestionId, userId, commentText);
+        logRecordDao.logCommentPosted(suggestionId, userId);
+
         List<CommentOut> commentsOut = new ArrayList<CommentOut>();
 
         for (Comment comment : comments) {

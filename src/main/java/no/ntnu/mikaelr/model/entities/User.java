@@ -4,25 +4,32 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
 
+    // Attributes ------------------------------------------------------------------------------------------------------
+
     private Integer id;
     private String username;
     private String password;
     private Integer score = 0;
+
+    // Relations -------------------------------------------------------------------------------------------------------
 
     private Set<UserRole> roles = new HashSet<UserRole>(0);
 
     private Set<Suggestion> suggestions;
     private Set<Comment> comments;
     private Set<FinishedMission> finishedMissions;
-
     private Set<Agreement> agreements;
     private Set<Disagreement> disagreements;
+    private List<LogRecord> logRecords;
+
+    // Constructors ----------------------------------------------------------------------------------------------------
 
     public User() {} // Empty constructor is needed
 
@@ -30,6 +37,8 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
+    // Attribute getters -----------------------------------------------------------------------------------------------
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +61,8 @@ public class User {
     public Integer getScore() {
         return score;
     }
+
+    // Relation getters ------------------------------------------------------------------------------------------------
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
@@ -87,6 +98,13 @@ public class User {
         return disagreements;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    public List<LogRecord> getLogRecords() {
+        return logRecords;
+    }
+
+    // Attribute setters -----------------------------------------------------------------------------------------------
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -102,6 +120,8 @@ public class User {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    // Relation setters ------------------------------------------------------------------------------------------------
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
@@ -125,5 +145,9 @@ public class User {
 
     public void setDisagreements(Set<Disagreement> disagreements) {
         this.disagreements = disagreements;
+    }
+
+    public void setLogRecords(List<LogRecord> logRecords) {
+        this.logRecords = logRecords;
     }
 }

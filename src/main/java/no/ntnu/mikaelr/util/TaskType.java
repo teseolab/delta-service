@@ -1,4 +1,4 @@
-package no.ntnu.mikaelr;
+package no.ntnu.mikaelr.util;
 
 public enum TaskType {
     SCALE_TASK,

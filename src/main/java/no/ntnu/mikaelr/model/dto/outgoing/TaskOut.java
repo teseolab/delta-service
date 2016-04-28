@@ -1,6 +1,6 @@
 package no.ntnu.mikaelr.model.dto.outgoing;
 
-import no.ntnu.mikaelr.TaskType;
+import no.ntnu.mikaelr.util.TaskType;
 
 public class TaskOut {
 

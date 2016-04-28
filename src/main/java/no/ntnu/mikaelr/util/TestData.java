@@ -1,6 +1,7 @@
-package no.ntnu.mikaelr;
+package no.ntnu.mikaelr.util;
 
 import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.util.TaskType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -17,6 +17,9 @@ public class ProjectDao {
     @Autowired
     SessionFactory sessionFactory;
 
+    @Autowired
+    private LogRecordDao logRecordDao;
+
     public List<Project> getProjects() {
 
         Session session = sessionFactory.openSession();
@@ -71,6 +74,8 @@ public class ProjectDao {
         FinishedMission finishedMission = new FinishedMission();
         finishedMission.setProject(project);
         finishedMission.setUser(user);
+
+        logRecordDao.logMissionComplete(session, project, user);
 
         session.save(finishedMission);
         session.getTransaction().commit();
