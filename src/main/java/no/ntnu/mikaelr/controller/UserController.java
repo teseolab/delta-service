@@ -42,6 +42,7 @@ public class UserController {
             userOut.setId(userId);
             userOut.setUsername(user.getUsername());
             userOut.setScore(user.getScore());
+            userOut.setAvatarUri(user.getAvatarUri());
 
             int numberOfMissions = userDao.getNumberOfMissionsCompleted(userId);
             int numberOfSuggestionsPosted = userDao.getNumberOfSuggestionsPosted(userId);
@@ -93,6 +94,7 @@ public class UserController {
         userOut.setId(userId);
         userOut.setUsername(user.getUsername());
         userOut.setScore(user.getScore());
+        userOut.setAvatarUri(user.getAvatarUri());
 
         int numberOfMissions = userDao.getNumberOfMissionsCompleted(userId);
         int numberOfSuggestionsPosted = userDao.getNumberOfSuggestionsPosted(userId);
@@ -119,6 +121,16 @@ public class UserController {
 
         return new ResponseEntity<List<LogRecordOut>>(logRecordsOut, HttpStatus.OK);
 
+    }
+
+    @PreAuthorize(value="hasAuthority('USER')")
+    @RequestMapping(value = "/me/avatar", method = RequestMethod.PUT)
+    public ResponseEntity postComment(@RequestBody String avatarUri) {
+
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        userDao.putAvatarUri(avatarUri, userId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

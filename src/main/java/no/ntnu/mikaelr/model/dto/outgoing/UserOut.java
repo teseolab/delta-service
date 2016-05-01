@@ -5,6 +5,7 @@ public class UserOut {
     private int id;
     private String username;
     private int score;
+    private String avatarUri;
     private int numberOfMissions;
     private int numberOfSuggestions;
     private int numberOfComments;
@@ -30,6 +31,14 @@ public class UserOut {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getAvatarUri() {
+        return avatarUri;
+    }
+
+    public void setAvatarUri(String avatarUri) {
+        this.avatarUri = avatarUri;
     }
 
     public int getScore() {

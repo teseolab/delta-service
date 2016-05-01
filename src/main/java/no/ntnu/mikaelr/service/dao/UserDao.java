@@ -118,4 +118,16 @@ public class UserDao {
         session.close();
         return numberOfCommentsPosted;
     }
+
+    public void putAvatarUri(String avatarUri, int userId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        User user = session.get(User.class, userId);
+        user.setAvatarUri(avatarUri);
+
+        session.save(user);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

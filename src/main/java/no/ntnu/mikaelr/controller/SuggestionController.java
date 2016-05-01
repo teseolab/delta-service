@@ -62,7 +62,11 @@ public class SuggestionController {
             CommentOut commentOut = new CommentOut();
             commentOut.setId(comment.getId());
             commentOut.setDate(comment.getDate());
-            commentOut.setUser(new UserOut(comment.getUser().getId(), comment.getUser().getUsername()));
+            UserOut userOut = new UserOut();
+            userOut.setId(comment.getUser().getId());
+            userOut.setUsername(comment.getUser().getUsername());
+            userOut.setAvatarUri(comment.getUser().getAvatarUri());
+            commentOut.setUser(userOut);
             commentOut.setComment(comment.getComment());
             commentsOut.add(commentOut);
         }
@@ -85,7 +89,11 @@ public class SuggestionController {
             CommentOut commentOut = new CommentOut();
             commentOut.setId(comment.getId());
             commentOut.setDate(comment.getDate());
-            commentOut.setUser(new UserOut(comment.getUser().getId(), comment.getUser().getUsername()));
+            UserOut userOut = new UserOut();
+            userOut.setId(comment.getUser().getId());
+            userOut.setUsername(comment.getUser().getUsername());
+            userOut.setAvatarUri(comment.getUser().getAvatarUri());
+            commentOut.setUser(userOut);
             commentOut.setComment(comment.getComment());
             commentsOut.add(commentOut);
         }

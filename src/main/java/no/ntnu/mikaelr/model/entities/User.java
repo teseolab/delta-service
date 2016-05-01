@@ -17,6 +17,7 @@ public class User {
     private String username;
     private String password;
     private Integer score = 0;
+    private String avatarUri;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
@@ -60,6 +61,11 @@ public class User {
     @Column(name = "score")
     public Integer getScore() {
         return score;
+    }
+
+    @Column(name = "avatar_uri")
+    public String getAvatarUri() {
+        return avatarUri;
     }
 
     // Relation getters ------------------------------------------------------------------------------------------------
@@ -119,6 +125,10 @@ public class User {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public void setAvatarUri(String avatarUri) {
+        this.avatarUri = avatarUri;
     }
 
     // Relation setters ------------------------------------------------------------------------------------------------

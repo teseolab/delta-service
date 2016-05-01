@@ -110,6 +110,7 @@ public class ProjectController {
         return new ResponseEntity<Boolean>(result, HttpStatus.OK);
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/suggestions", method = RequestMethod.GET)
     public ResponseEntity<List<SuggestionOut>> getSuggestions(@PathVariable Integer projectId) {
 

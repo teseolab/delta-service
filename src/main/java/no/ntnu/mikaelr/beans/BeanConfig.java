@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.web.multipart.support.MultipartFilter;
 
 @Configuration
 public class BeanConfig {
@@ -45,6 +46,11 @@ public class BeanConfig {
     }
 
     @Bean
+    public ImageDao imageDao() {
+        return new ImageDao();
+    }
+
+    @Bean
     public LogRecordDao logRecordDao() {
         return new LogRecordDao();
     }
@@ -52,6 +58,11 @@ public class BeanConfig {
     @Bean
     public SessionFactory sessionFactory() {
         return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+    }
+
+    @Bean
+    public MultipartFilter multipartFilter() {
+        return new MultipartFilter();
     }
 
 //    @Bean

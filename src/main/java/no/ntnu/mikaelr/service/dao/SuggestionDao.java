@@ -32,7 +32,12 @@ public class SuggestionDao {
         session.beginTransaction();
 
         Project project = session.get(Project.class, projectId);
-        List<Suggestion> suggestions = project.getSuggestions();
+
+        Query query = session.createQuery("from Suggestion where project = :project order by date desc");
+        query.setParameter("project", project);
+
+        @SuppressWarnings("unchecked")
+        List<Suggestion> suggestions = query.list();
 
         if (suggestions.size() > 0) {
             Hibernate.initialize(suggestions);
@@ -41,7 +46,6 @@ public class SuggestionDao {
         session.getTransaction().commit();
         session.close();
 
-        Collections.reverse(suggestions);
         return suggestions;
 
     }
@@ -180,7 +184,12 @@ public class SuggestionDao {
         session.beginTransaction();
 
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
-        List<Comment> comments = suggestion.getComments();
+
+        Query query = session.createQuery("from Comment where suggestion = :suggestion order by date desc");
+        query.setParameter("suggestion", suggestion);
+
+        @SuppressWarnings("unchecked")
+        List<Comment> comments = query.list();
 
         if (comments.size() > 0) {
             Hibernate.initialize(comments);
@@ -189,7 +198,6 @@ public class SuggestionDao {
         session.getTransaction().commit();
         session.close();
 
-        Collections.reverse(comments);
         return comments;
 
     }
