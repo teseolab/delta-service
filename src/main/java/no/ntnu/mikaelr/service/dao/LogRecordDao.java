@@ -4,6 +4,7 @@ import no.ntnu.mikaelr.model.entities.LogRecord;
 import no.ntnu.mikaelr.model.entities.Project;
 import no.ntnu.mikaelr.model.entities.Suggestion;
 import no.ntnu.mikaelr.model.entities.User;
+import no.ntnu.mikaelr.util.Constants;
 import no.ntnu.mikaelr.util.LogRecordType;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -56,7 +57,7 @@ public class LogRecordDao {
         logRecord.setDate(Calendar.getInstance().getTime());
         logRecord.setDescription("Du postet et forslag til prosjektet " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
         logRecord.setType(LogRecordType.SUGGESTION);
-        logRecord.setGeneratedScore(25);
+        logRecord.setGeneratedScore(Constants.POST_SUGGESTION_SCORE);
 
         logRecord.setUser(user);
         logRecord.setSuggestion(suggestion);
@@ -69,7 +70,7 @@ public class LogRecordDao {
         logRecord.setDate(Calendar.getInstance().getTime());
         logRecord.setDescription("Du var enig i forslaget " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
         logRecord.setType(LogRecordType.AGREEMENT);
-        logRecord.setGeneratedScore(10);
+        logRecord.setGeneratedScore(Constants.POST_AGREEMENT_SCORE);
         logRecord.setUser(user);
         logRecord.setSuggestion(suggestion);
         session.save(logRecord);
@@ -80,7 +81,7 @@ public class LogRecordDao {
         logRecord.setDate(Calendar.getInstance().getTime());
         logRecord.setDescription("Du var uenig i forslaget " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
         logRecord.setType(LogRecordType.DISAGREEMENT);
-        logRecord.setGeneratedScore(10);
+        logRecord.setGeneratedScore(Constants.POST_AGREEMENT_SCORE);
         logRecord.setUser(user);
         logRecord.setSuggestion(suggestion);
         session.save(logRecord);
@@ -97,7 +98,7 @@ public class LogRecordDao {
         logRecord.setDate(Calendar.getInstance().getTime());
         logRecord.setDescription("Du postet en kommentar til forslaget " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
         logRecord.setType(LogRecordType.COMMENT);
-        logRecord.setGeneratedScore(10);
+        logRecord.setGeneratedScore(Constants.POST_COMMENT_SCORE);
 
         logRecord.setUser(user);
         logRecord.setSuggestion(suggestion);

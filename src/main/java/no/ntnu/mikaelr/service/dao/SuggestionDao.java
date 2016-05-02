@@ -58,16 +58,20 @@ public class SuggestionDao {
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
         User user = session.get(User.class, userId);
 
-        deleteDisagreement(session, suggestion, user);
-        logRecordDao.deleteDisagreementLogRecord(session, suggestion, user);
+        if (deleteDisagreement(session, suggestion, user)) {
+            logRecordDao.deleteDisagreementLogRecord(session, suggestion, user);
+            user.decrementScore(Constants.POST_AGREEMENT_SCORE);
+        }
 
         Agreement existingAgreement = getAgreement(session, suggestion, user);
         if (existingAgreement == null) {
             Agreement agreement = new Agreement(suggestion, user);
             logRecordDao.logAgreement(session, suggestion, user);
+            user.incrementScore(Constants.POST_AGREEMENT_SCORE);
             session.save(agreement);
         }
 
+        session.save(user);
         session.getTransaction().commit();
         session.close();
 
@@ -92,16 +96,20 @@ public class SuggestionDao {
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
         User user = session.get(User.class, userId);
 
-        deleteAgreement(session, suggestion, user);
-        logRecordDao.deleteAgreementLogRecord(session, suggestion, user);
+        if (deleteAgreement(session, suggestion, user)) {
+            logRecordDao.deleteAgreementLogRecord(session, suggestion, user);
+            user.decrementScore(Constants.POST_AGREEMENT_SCORE);
+        }
 
         Disagreement existingDisagreement = getDisagreement(session, suggestion, user);
         if (existingDisagreement == null) {
             Disagreement disagreement = new Disagreement(suggestion, user);
             logRecordDao.logDisagreement(session, suggestion, user);
+            user.incrementScore(Constants.POST_AGREEMENT_SCORE);
             session.save(disagreement);
         }
 
+        session.save(user);
         session.getTransaction().commit();
         session.close();
 
@@ -118,18 +126,20 @@ public class SuggestionDao {
         return result;
     }
 
-    private void deleteAgreement(Session session, Suggestion suggestion, User user) {
+    private boolean deleteAgreement(Session session, Suggestion suggestion, User user) {
         Query query = session.createQuery("delete from Agreement where suggestion = :suggestion and user = :user");
         query.setParameter("suggestion", suggestion);
         query.setParameter("user", user);
         int rowsDeleted = query.executeUpdate();
+        return rowsDeleted > 0;
     }
 
-    private void deleteDisagreement(Session session, Suggestion suggestion, User user) {
+    private boolean deleteDisagreement(Session session, Suggestion suggestion, User user) {
         Query query = session.createQuery("delete from Disagreement where suggestion = :suggestion and user = :user");
         query.setParameter("suggestion", suggestion);
         query.setParameter("user", user);
         int rowsDeleted = query.executeUpdate();
+        return rowsDeleted > 0;
     }
 
     private Agreement getAgreement(Session session, Suggestion suggestion, User user) {
@@ -209,6 +219,7 @@ public class SuggestionDao {
 
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
         User user = session.get(User.class, userId);
+        user.incrementScore(Constants.POST_COMMENT_SCORE);
 
         Comment comment = new Comment();
         comment.setDate(Calendar.getInstance().getTime());
@@ -217,6 +228,7 @@ public class SuggestionDao {
         comment.setUser(user);
 
         session.save(comment);
+        session.save(user);
         session.getTransaction().commit();
         session.close();
 
@@ -242,10 +254,12 @@ public class SuggestionDao {
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = session.get(User.class, userId);
         suggestion.setUser(user);
+        user.incrementScore(Constants.POST_SUGGESTION_SCORE);
 
         logRecordDao.logSuggestionPosted(session, suggestion, user);
 
         session.save(suggestion);
+        session.save(user);
         session.getTransaction().commit();
         session.close();
         return suggestion;

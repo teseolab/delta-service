@@ -8,4 +8,11 @@ public class Constants {
     public static final String NO = "NO";
     public static final String NA = "NA";
 
+    public static final int POST_COMMENT_SCORE = 10;
+    public static final int POST_AGREEMENT_SCORE = 10;
+    public static final int POST_SUGGESTION_SCORE = 15;
+    public static final int RECEIVE_AGREEMENT_SCORE = 15;
+    public static final int FINISH_MISSION_SCORE = 50;
+    public static final int FINISH_MISSION_WITH_FRIEND_SCORE = 75;
+
 }

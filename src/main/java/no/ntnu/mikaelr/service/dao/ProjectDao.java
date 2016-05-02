@@ -4,6 +4,7 @@ import no.ntnu.mikaelr.model.entities.FinishedMission;
 import no.ntnu.mikaelr.model.entities.Project;
 import no.ntnu.mikaelr.model.entities.Task;
 import no.ntnu.mikaelr.model.entities.User;
+import no.ntnu.mikaelr.util.Constants;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -75,9 +76,12 @@ public class ProjectDao {
         finishedMission.setProject(project);
         finishedMission.setUser(user);
 
+        user.incrementScore(Constants.FINISH_MISSION_SCORE);
+
         logRecordDao.logMissionComplete(session, project, user);
 
         session.save(finishedMission);
+        session.save(user);
         session.getTransaction().commit();
         session.close();
     }

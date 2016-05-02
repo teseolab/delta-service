@@ -127,6 +127,14 @@ public class User {
         this.score = score;
     }
 
+    public void incrementScore(int score) {
+        this.score += score;
+    }
+
+    public void decrementScore(int score) {
+        this.score -= score;
+    }
+
     public void setAvatarUri(String avatarUri) {
         this.avatarUri = avatarUri;
     }
