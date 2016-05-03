@@ -12,8 +12,10 @@ public class Task {
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private Integer id;
+    private Integer taskOrder;
     @Enumerated(EnumType.STRING)
     private TaskType taskType;
+    private String imageUri;
     private float latitude;
     private float longitude;
     private String hint;
@@ -36,9 +38,19 @@ public class Task {
         return id;
     }
 
+    @Column(name = "task_order", nullable = false)
+    public Integer getTaskOrder() {
+        return taskOrder;
+    }
+
     @Column(name = "task_type", nullable = false)
     public TaskType getTaskType() {
         return taskType;
+    }
+
+    @Column(name = "image_uri")
+    public String getImageUri() {
+        return imageUri;
     }
 
     @Column(name = "latitude", nullable = false)
@@ -74,6 +86,14 @@ public class Task {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setTaskOrder(Integer order) {
+        this.taskOrder = order;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public void setLatitude(float latitude) {

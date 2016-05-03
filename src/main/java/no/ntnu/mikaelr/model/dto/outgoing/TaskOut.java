@@ -5,7 +5,9 @@ import no.ntnu.mikaelr.util.TaskType;
 public class TaskOut {
 
     private Integer id;
+    private Integer order;
     private TaskType taskType;
+    private String imageUri;
     private float latitude;
     private float longitude;
     private String hint;
@@ -19,12 +21,28 @@ public class TaskOut {
         this.id = id;
     }
 
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public TaskType getTaskType() {
         return taskType;
     }
 
     public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public float getLatitude() {

@@ -14,6 +14,7 @@ public class Project {
     private Integer id;
     private String name;
     private String description;
+    private String imageUri;
     private float latitude;
     private float longitude;
 
@@ -43,6 +44,11 @@ public class Project {
     @Column(name = "description", nullable = false, columnDefinition = "varchar(600)")
     public String getDescription() {
         return description;
+    }
+
+    @Column(name = "image_uri")
+    public String getImageUri() {
+        return imageUri;
     }
 
     @Column(name = "latitude", nullable = true)
@@ -81,6 +87,10 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public void setLatitude(float latitude) {

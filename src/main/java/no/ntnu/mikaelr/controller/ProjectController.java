@@ -44,6 +44,7 @@ public class ProjectController {
             outgoingProject.setLatitude(project.getLatitude());
             outgoingProject.setLongitude(project.getLongitude());
             outgoingProject.setDescription(project.getDescription());
+            outgoingProject.setImageUri(project.getImageUri());
             response.add(outgoingProject);
         }
 
@@ -60,6 +61,7 @@ public class ProjectController {
         response.setLatitude(project.getLatitude());
         response.setLongitude(project.getLongitude());
         response.setDescription(project.getDescription());
+        response.setImageUri(project.getImageUri());
 
         return new ResponseEntity<ProjectOutgoing>(response, HttpStatus.OK);
     }
@@ -73,7 +75,9 @@ public class ProjectController {
         for (Task task : tasks) {
             TaskOut taskOut = new TaskOut();
             taskOut.setId(task.getId());
+            taskOut.setOrder(task.getTaskOrder());
             taskOut.setTaskType(task.getTaskType());
+            taskOut.setImageUri(task.getImageUri());
             taskOut.setLatitude(task.getLatitude());
             taskOut.setLongitude(task.getLongitude());
             taskOut.setDescriptions(task.getDescriptions());

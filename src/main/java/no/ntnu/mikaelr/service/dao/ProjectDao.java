@@ -6,6 +6,7 @@ import no.ntnu.mikaelr.model.entities.Task;
 import no.ntnu.mikaelr.model.entities.User;
 import no.ntnu.mikaelr.util.Constants;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,11 @@ public class ProjectDao {
         session.beginTransaction();
 
         Project project = session.get(Project.class, projectId);
-        List<Task> tasks = project.getTasks();
+
+        Query query = session.createQuery("from Task where project = :project order by taskOrder");
+        query.setParameter("project", project);
+        @SuppressWarnings("unchecked")
+        List<Task> tasks = query.list();
 
         if (tasks.size() > 0) {
             Hibernate.initialize(tasks);
