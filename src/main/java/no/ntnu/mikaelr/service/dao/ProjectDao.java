@@ -27,8 +27,9 @@ public class ProjectDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
+        Query query = session.createQuery("from Project order by id");
         @SuppressWarnings("unchecked")
-        List<Project> projects = session.createCriteria(Project.class).list();
+        List<Project> projects = query.list();
 
         session.getTransaction().commit();
         session.close();
