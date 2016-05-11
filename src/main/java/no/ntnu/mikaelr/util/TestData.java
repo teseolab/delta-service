@@ -1,13 +1,14 @@
 package no.ntnu.mikaelr.util;
 
 import no.ntnu.mikaelr.model.entities.*;
+import no.ntnu.mikaelr.service.dao.ProjectDao;
 import no.ntnu.mikaelr.util.TaskType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Calendar;
+import java.util.*;
 
 public class TestData {
 
@@ -17,6 +18,9 @@ public class TestData {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    ProjectDao projectDao;
+
     private User user;
     private Project project;
 
@@ -24,6 +28,40 @@ public class TestData {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+
+//        Project bycampus = projectDao.getProject(2);
+//        createTask(
+//                session,
+//                bycampus,
+//                3,
+//                TaskType.SCALE_TASK,
+//                63.416178f,
+//                10.402828f,
+//                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
+//                Arrays.asList(
+//                        "Dette området kunne ha blitt mye bedre utnyttet.",
+//                        "Jeg vil ha et lite skianlegg her.",
+//                        "Dette er en god plass for å sette opp flere studentboliger."),
+//                "http://129.241.102.204:8080/images/kjhasoiabhasjkhdf");
+//        createTask(
+//                session,
+//                bycampus,
+//                4,
+//                TaskType.TEXT_TASK,
+//                63.416799f,
+//                10.405833f,
+//                "Gå tilbake i Sem Sælands vei (der du kom fra). Neste punkt er langs denne veien.",
+//                Collections.singletonList("På din venstre side ser du en liten åpen plass i hjertet av Gløshaugen. Har du noen forslag til hvordan denne plassen kunne blitt brukt på en best mulig måte?"),
+//                "http://129.241.102.204:8080/images/skiboli");
+//        createTask(
+//                session,
+//                bycampus,
+//                4,
+//                TaskType.TEXT_TASK,
+//                63.416673f,
+//                10.404051f,
+//                "Fortsett fremover langs sentralbygget til du når en statue.",
+//                Collections.singletonList("Du står nå like ved Hangaren, en av Sit sine kantiner på Gløshaugen. I hvilken kantine pleier du å spise og hvorfor?"));
 
 //        user = createUser(session);
 //
@@ -36,6 +74,21 @@ public class TestData {
         session.getTransaction().commit();
         session.close();
 
+    }
+
+    private void createTask(Session session, Project project, int order, TaskType taskType, float latitude, float longitude, String hint, List<String> descriptions, String imageUri) {
+        Task task = new Task();
+        task.setTaskOrder(order);
+        task.setProject(project);
+        task.setTaskType(taskType);
+        task.setLatitude(latitude);
+        task.setLongitude(longitude);
+        task.setHint(hint);
+        String[] descArray = new String[descriptions.size()];
+        descArray = descriptions.toArray(descArray);
+        task.setDescriptions(descArray);
+        task.setImageUri(imageUri);
+        session.save(task);
     }
 
     private void createSuggestionWithComment(Session session) {

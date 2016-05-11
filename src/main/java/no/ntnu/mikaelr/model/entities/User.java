@@ -53,7 +53,7 @@ public class User {
         return username;
     }
 
-    @Column(name = "password", unique = true, nullable = false)
+    @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
     }

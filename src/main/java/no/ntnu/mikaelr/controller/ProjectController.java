@@ -31,6 +31,7 @@ public class ProjectController {
     @Autowired
     private SuggestionDao suggestionDao;
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProjectOutgoing>> getProjects() {
 
@@ -51,6 +52,7 @@ public class ProjectController {
         return new ResponseEntity<List<ProjectOutgoing>>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}", method = RequestMethod.GET)
     public ResponseEntity<ProjectOutgoing> getProject(@PathVariable Integer projectId) {
         Project project = projectDao.getProject(projectId);
@@ -66,6 +68,7 @@ public class ProjectController {
         return new ResponseEntity<ProjectOutgoing>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/tasks", method = RequestMethod.GET)
     public ResponseEntity<List<TaskOut>> getTasks(@PathVariable Integer projectId) {
 
@@ -108,6 +111,7 @@ public class ProjectController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/mission/isCompleted", method = RequestMethod.GET)
     public ResponseEntity<Boolean> missionForProjectIsCompletedByUser(@PathVariable Integer projectId) {
         Boolean result = projectResponseDao.missionForProjectIsCompletedByUser(projectId);

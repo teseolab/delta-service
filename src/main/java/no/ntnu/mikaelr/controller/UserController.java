@@ -67,6 +67,13 @@ public class UserController {
         String registerCode = incomingUser.getRegisterCode();
 
         if (registerCodes.contains(registerCode)) {
+
+            User existingUser = userDao.getUserByUsername(incomingUser.getUsername());
+
+            if (existingUser != null) {
+                return new ResponseEntity(null, HttpStatus.CONFLICT);
+            }
+
             User user = userDao.createUser(incomingUser);
             UserOut response = new UserOut();
             response.setId(user.getId());
