@@ -28,6 +28,7 @@ public class UserController {
     @Autowired
     private LogRecordDao logRecordDao;
 
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserOut>> getHighscoreUsers() {
 
