@@ -18,7 +18,7 @@
         <property name="show_sql">true</property>
 
         <!-- Drop and re-create all database on startup -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!--c3p0 config-->
         <property name="hibernate.c3p0.min_size">5</property>
@@ -33,7 +33,7 @@
         <mapping class="no.ntnu.mikaelr.model.entities.User"/>
         <mapping class="no.ntnu.mikaelr.model.entities.UserRole"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Project"/>
-        <mapping class="no.ntnu.mikaelr.model.entities.ProjectResponse"/>
+        <mapping class="no.ntnu.mikaelr.model.entities.TaskResponse"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Task"/>
         <mapping class="no.ntnu.mikaelr.model.entities.FinishedMission"/>
         <mapping class="no.ntnu.mikaelr.model.entities.Suggestion"/>

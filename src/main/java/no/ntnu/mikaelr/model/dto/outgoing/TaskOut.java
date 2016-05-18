@@ -2,6 +2,8 @@ package no.ntnu.mikaelr.model.dto.outgoing;
 
 import no.ntnu.mikaelr.util.TaskType;
 
+import java.util.List;
+
 public class TaskOut {
 
     private Integer id;
@@ -11,7 +13,8 @@ public class TaskOut {
     private float latitude;
     private float longitude;
     private String hint;
-    private String[] descriptions;
+    private List<String> taskElements;
+    private String description;
 
     public Integer getId() {
         return id;
@@ -69,11 +72,20 @@ public class TaskOut {
         this.hint = hint;
     }
 
-    public String[] getDescriptions() {
-        return descriptions;
+
+    public List<String> getTaskElements() {
+        return taskElements;
     }
 
-    public void setDescriptions(String[] descriptions) {
-        this.descriptions = descriptions;
+    public void setTaskElements(List<String> taskElements) {
+        this.taskElements = taskElements;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

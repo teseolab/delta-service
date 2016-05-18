@@ -1,6 +1,6 @@
 package no.ntnu.mikaelr.service.dao;
 
-import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
+import no.ntnu.mikaelr.model.dto.incoming.TaskResponseIn;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.security.SessionUser;
 import org.hibernate.Hibernate;
@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.List;
 
 public class ProjectResponseDao {
 
@@ -24,28 +26,28 @@ public class ProjectResponseDao {
     @Autowired
     TaskDao taskDao;
 
-    public ProjectResponse createProjectResponse(ProjectResponseIn incoming) {
+    public TaskResponse createProjectResponse(TaskResponseIn incoming) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        String[] response = incoming.getResponse();
+        List<String> response = incoming.getResponse();
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = userDao.getUserById(userId);
         Project project = projectDao.getProject(incoming.getProjectId());
         Task task = taskDao.getTask(incoming.getTaskId());
 
-        ProjectResponse projectResponse = new ProjectResponse(response, user, project, task);
+        TaskResponse taskResponse = new TaskResponse(response, user, project, task);
 
         if (project != null) {
-            Hibernate.initialize(projectResponse);
+            Hibernate.initialize(taskResponse);
         }
 
-        session.save(projectResponse);
+        session.save(taskResponse);
         session.getTransaction().commit();
         session.close();
 
-        return projectResponse;
+        return taskResponse;
     }
 
     public boolean missionForProjectIsCompletedByUser(Integer projectId) {
@@ -57,7 +59,7 @@ public class ProjectResponseDao {
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = userDao.getUserById(userId);
 
-        Query query = session.createQuery("select count(pr) from ProjectResponse pr where project = :project and user = :user");
+        Query query = session.createQuery("select count(pr) from TaskResponse pr where project = :project and user = :user");
         query.setParameter("project", project);
         query.setParameter("user", user);
 

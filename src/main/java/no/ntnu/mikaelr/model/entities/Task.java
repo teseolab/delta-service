@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import no.ntnu.mikaelr.util.TaskType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tasks")
@@ -11,7 +12,7 @@ public class Task {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer taskId;
     private Integer taskOrder;
     @Enumerated(EnumType.STRING)
     private TaskType taskType;
@@ -19,7 +20,8 @@ public class Task {
     private float latitude;
     private float longitude;
     private String hint;
-    private String[] descriptions;
+    private String description;
+    private List<String> taskElements;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
@@ -34,8 +36,8 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id", unique = true, nullable = false)
-    public Integer getId() {
-        return id;
+    public Integer getTaskId() {
+        return taskId;
     }
 
     @Column(name = "task_order", nullable = false)
@@ -68,9 +70,16 @@ public class Task {
         return hint;
     }
 
-    @Column(name = "descriptions", nullable = false)
-    public String[] getDescriptions() {
-        return descriptions;
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "task_elements", joinColumns = @JoinColumn(name = "task_id"))
+    @Column(name = "task_element", nullable = false)
+    public List<String> getTaskElements() {
+        return taskElements;
     }
 
     // Relation getters ------------------------------------------------------------------------------------------------
@@ -84,8 +93,8 @@ public class Task {
 
     // Attribute setters -----------------------------------------------------------------------------------------------
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
     }
 
     public void setTaskOrder(Integer order) {
@@ -103,17 +112,20 @@ public class Task {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
-
     public void setHint(String hint) {
         this.hint = hint;
     }
 
-    public void setDescriptions(String[] descriptions) {
-        this.descriptions = descriptions;
-    }
-
     public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTaskElements(List<String> taskElements) {
+        this.taskElements = taskElements;
     }
 
     // Relation setters ------------------------------------------------------------------------------------------------

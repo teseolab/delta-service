@@ -2,7 +2,6 @@ package no.ntnu.mikaelr.util;
 
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.service.dao.ProjectDao;
-import no.ntnu.mikaelr.util.TaskType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class TestData {
 
 //        user = createUser(session);
 //
-//        project = createProject(session);
+        project = createProject(session);
 //        createProject2(session);
 //        createProject3(session);
 //
@@ -76,7 +75,7 @@ public class TestData {
 
     }
 
-    private void createTask(Session session, Project project, int order, TaskType taskType, float latitude, float longitude, String hint, List<String> descriptions, String imageUri) {
+    private void createTask(Session session, Project project, int order, TaskType taskType, float latitude, float longitude, String hint, String description, List<String> tasks, String imageUri) {
         Task task = new Task();
         task.setTaskOrder(order);
         task.setProject(project);
@@ -84,9 +83,8 @@ public class TestData {
         task.setLatitude(latitude);
         task.setLongitude(longitude);
         task.setHint(hint);
-        String[] descArray = new String[descriptions.size()];
-        descArray = descriptions.toArray(descArray);
-        task.setDescriptions(descArray);
+        task.setDescription(description);
+        task.setTaskElements(tasks);
         task.setImageUri(imageUri);
         session.save(task);
     }
@@ -135,6 +133,7 @@ public class TestData {
         project.setDescription("På Nyhavna er det et betydelig utbyggingspotensial som det er naturlig å vurdere opp mot vedtatte byutviklingsstrategier. Samtidig kan det være viktig å ivareta Nyhavnas rolle som havn med plass til virksomheter som naturlig hører hjemme i havneområdet.");
         project.setLatitude(63.439207f);
         project.setLongitude(10.419620f);
+        project.setImageUri("https://www.trondheim.kommune.no/multimedia/1115028694/Fotoill.-3_stort-oversiktsbilde.jpg");
         session.save(project);
         createProjectTasks(session, project);
         return project;
@@ -142,25 +141,63 @@ public class TestData {
 
     private void createProjectTasks(Session session, Project project) {
 
-        Task task1 = new Task();
-        task1.setProject(project);
-        task1.setTaskType(TaskType.SCALE_TASK);
-        task1.setLatitude(63.439724f);
-        task1.setLongitude(10.415015f);
-        task1.setHint("Følg Styrmannsgata ut mot bryggen.");
-        String[] taskDescriptions = {"Dette er en fin plass.", "Dette burde være et friluftsområde åpent for alle.", "Området burde være forebeholdt industri."};
-        task1.setDescriptions(taskDescriptions);
-        session.save(task1);
+        Task newTask = new Task();
+        newTask.setProject(project);
+        newTask.setTaskOrder(1);
+        newTask.setTaskType(TaskType.SCALE_TASK);
+        newTask.setLatitude(63.439724f);
+        newTask.setLongitude(10.415015f);
+        newTask.setImageUri("http://www.koteng.no/multimedia/570/DJI00021.jpg");
+        newTask.setHint("Følg Styrmannsgata ut mot bryggen.");
+        String description = "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.";
+        newTask.setDescription(description);
+        String task1 = "Dette er en fin plass.";
+        String task2 = "Dette burde være et friluftsområde åpent for alle.";
+        String task3 = "Området burde være forebeholdt industri.";
+        List<String> taskElements = new ArrayList<String>();
+        taskElements.add(task1);
+        taskElements.add(task2);
+        taskElements.add(task3);
+        newTask.setTaskElements(taskElements);
+        session.save(newTask);
 
-        Task task2 = new Task();
-        task2.setProject(project);
-        task2.setTaskType(TaskType.TEXT_TASK);
-        task2.setLatitude(63.440595f);
-        task2.setLongitude(10.413505f);
-        task2.setHint("Gå gjennom det nærmeste veikrysset og ut mot kaia.");
-        String[] taskDescriptions2 = {"Dette bildet vister mange bygg. Beskriv kort hva du tenker om dette forslaget."};
-        task2.setDescriptions(taskDescriptions2);
-        session.save(task2);
+        Task newTask2 = new Task();
+        newTask2.setTaskOrder(2);
+        newTask2.setProject(project);
+        newTask2.setTaskType(TaskType.TEXT_TASK);
+        newTask2.setLatitude(63.440595f);
+        newTask2.setLongitude(10.413505f);
+        newTask.setImageUri("http://trondheimhavn.no/uploads/bilder/nyheter/2011/10/111026+Kanalbo.jpg");
+        newTask2.setHint("Gå gjennom det nærmeste veikrysset og ut mot kaia.");
+        newTask2.setDescription("Dette bildet vister mange bygg. Beskriv kort hva du tenker om dette forslaget.");
+        session.save(newTask2);
+
+        Task newTask3 = new Task();
+        newTask3.setTaskOrder(0);
+        newTask3.setProject(project);
+        newTask3.setTaskType(TaskType.ALTERNATIVE_TASK);
+        newTask3.setLatitude(63.442737f);
+        newTask3.setLongitude(10.415833f);
+        newTask3.setImageUri("http://2.bp.blogspot.com/-Jfll5rbk7YI/UHsZ_Vt6pfI/AAAAAAAAJ_E/hvZ6WwDt778/s1600/IMG_5161-Sollys-ved-Nyhavna_1.jpg");
+        newTask3.setHint("Gå lenger ut");
+        newTask3.setDescription("Hva vil du ha her?");
+        String alternative1 = "Bensinstasjon";
+        String alternative2 = "Isbar";
+        String alternative3 = "Drive-in kino";
+        String alternative4 = "Rema 1000";
+        String alternative5 = "Fotballbane";
+        String alternative6 = "Badebasseng";
+        String alternative7 = "Annet";
+        taskElements = new ArrayList<String>();
+        taskElements.add(alternative1);
+        taskElements.add(alternative3);
+        taskElements.add(alternative2);
+        taskElements.add(alternative4);
+        taskElements.add(alternative5);
+        taskElements.add(alternative6);
+        taskElements.add(alternative7);
+        newTask3.setTaskElements(taskElements);
+        session.save(newTask3);
 
     }
 
@@ -177,25 +214,31 @@ public class TestData {
 
     private void createProjectTasks2(Session session, Project project) {
 
-        Task task1 = new Task();
-        task1.setProject(project);
-        task1.setTaskType(TaskType.SCALE_TASK);
-        task1.setLatitude(63.419582f);
-        task1.setLongitude(10.400352f);
-        task1.setHint("Gå ut på gresset til høyre.");
-        String[] taskDescriptions = {"Utsikten må bevares.", "Dette burde være et friluftsområde åpent for alle.", "Det burde være flere benker her."};
-        task1.setDescriptions(taskDescriptions);
+        Task newTask = new Task();
+        newTask.setProject(project);
+        newTask.setTaskType(TaskType.SCALE_TASK);
+        newTask.setLatitude(63.419582f);
+        newTask.setLongitude(10.400352f);
+        newTask.setHint("Gå ut på gresset til høyre.");
+        newTask.setDescription("Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.");
+        String task1 = "Utsikten må bevares.";
+        String task2 = "Dette burde være et friluftsområde åpent for alle.";
+        String task3 = "Det burde være flere benker her.";
+        List<String> taskElements = new ArrayList<String>();
+        taskElements.add(task1);
+        taskElements.add(task2);
+        taskElements.add(task3);
+        newTask.setTaskElements(taskElements);
         session.save(task1);
 
-        Task task2 = new Task();
-        task2.setProject(project);
-        task2.setTaskType(TaskType.TEXT_TASK);
-        task2.setLatitude(63.418786f);
-        task2.setLongitude(10.402683f);
-        task2.setHint("Bak hovedbygget er en firkantet plen. Gå dit.");
-        String[] taskDescriptions2 = {"Det er foreslått å bygge noe her. Hva tenker du om det?"};
-        task2.setDescriptions(taskDescriptions2);
-        session.save(task2);
+        Task newTask2 = new Task();
+        newTask2.setProject(project);
+        newTask2.setTaskType(TaskType.TEXT_TASK);
+        newTask2.setLatitude(63.418786f);
+        newTask2.setLongitude(10.402683f);
+        newTask2.setHint("Bak hovedbygget er en firkantet plen. Gå dit.");
+        newTask2.setDescription("Det er foreslått å bygge noe her. Hva tenker du om det?");
+        session.save(newTask2);
 
     }
 
@@ -212,25 +255,31 @@ public class TestData {
 
     private void createProjectTasks3(Session session, Project project) {
 
-        Task task1 = new Task();
-        task1.setProject(project);
-        task1.setTaskType(TaskType.SCALE_TASK);
-        task1.setLatitude(63.430253f);
-        task1.setLongitude(10.397717f);
-        task1.setHint("Gå østover i Kongens gate mot Vår Frue kirke.");
-        String[] taskDescriptions = {"Det burde være restauranter langs denne strekningen.", "Hele strekningen burde bli omgjort til gågate", "Det burde være flere benker her."};
-        task1.setDescriptions(taskDescriptions);
+        Task newTask = new Task();
+        newTask.setProject(project);
+        newTask.setTaskType(TaskType.SCALE_TASK);
+        newTask.setLatitude(63.430253f);
+        newTask.setLongitude(10.397717f);
+        newTask.setHint("Gå østover i Kongens gate mot Vår Frue kirke.");
+        newTask.setDescription("Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.");
+        String task1 = "Det burde være restauranter langs denne strekningen.";
+        String task2 = "Hele strekningen burde bli omgjort til gågate";
+        String task3 = "Det burde være flere benker her.";
+        List<String> taskElements = new ArrayList<String>();
+        taskElements.add(task1);
+        taskElements.add(task2);
+        taskElements.add(task3);
+        newTask.setTaskElements(taskElements);
         session.save(task1);
 
-        Task task2 = new Task();
-        task2.setProject(project);
-        task2.setTaskType(TaskType.TEXT_TASK);
-        task2.setLatitude(63.430810f);
-        task2.setLongitude(10.395941f);
-        task2.setHint("Gå tilbake til torget og opp i øvre nordre hjørne av torgsplassen.");
-        String[] taskDescriptions2 = {"Se utover torget og forestill deg et yrende folkeliv. Hva ønsker du at man skal kunne gjøre på torget?"};
-        task2.setDescriptions(taskDescriptions2);
-        session.save(task2);
+        Task newTask2 = new Task();
+        newTask2.setProject(project);
+        newTask2.setTaskType(TaskType.TEXT_TASK);
+        newTask2.setLatitude(63.430810f);
+        newTask2.setLongitude(10.395941f);
+        newTask2.setHint("Gå tilbake til torget og opp i øvre nordre hjørne av torgsplassen.");
+        newTask2.setDescription("Se utover torget og forestill deg et yrende folkeliv. Hva ønsker du at man skal kunne gjøre på torget?");
+        session.save(newTask2);
 
     }
 

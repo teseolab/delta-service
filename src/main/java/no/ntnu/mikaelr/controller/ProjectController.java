@@ -1,6 +1,6 @@
 package no.ntnu.mikaelr.controller;
 
-import no.ntnu.mikaelr.model.dto.incoming.ProjectResponseIn;
+import no.ntnu.mikaelr.model.dto.incoming.TaskResponseIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.security.SessionUser;
@@ -68,7 +68,7 @@ public class ProjectController {
         return new ResponseEntity<ProjectOutgoing>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize(value="hasAuthority('USER')")
+    //@PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/tasks", method = RequestMethod.GET)
     public ResponseEntity<List<TaskOut>> getTasks(@PathVariable Integer projectId) {
 
@@ -77,13 +77,14 @@ public class ProjectController {
 
         for (Task task : tasks) {
             TaskOut taskOut = new TaskOut();
-            taskOut.setId(task.getId());
+            taskOut.setId(task.getTaskId());
             taskOut.setOrder(task.getTaskOrder());
             taskOut.setTaskType(task.getTaskType());
             taskOut.setImageUri(task.getImageUri());
             taskOut.setLatitude(task.getLatitude());
             taskOut.setLongitude(task.getLongitude());
-            taskOut.setDescriptions(task.getDescriptions());
+            taskOut.setDescription(task.getDescription());
+            taskOut.setTaskElements(task.getTaskElements());
             taskOut.setHint(task.getHint());
             tasksOut.add(taskOut);
         }
@@ -94,13 +95,13 @@ public class ProjectController {
 
     @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/responses", method = RequestMethod.POST)
-    public ResponseEntity<ProjectResponseIn> postResponse(@PathVariable Integer projectId, @RequestBody ProjectResponseIn incoming) {
+    public ResponseEntity<TaskResponseIn> postResponse(@PathVariable Integer projectId, @RequestBody TaskResponseIn incoming) {
 
         if (projectId == incoming.getProjectId()) {
             projectResponseDao.createProjectResponse(incoming);
-            return new ResponseEntity<ProjectResponseIn>(incoming, HttpStatus.OK);
+            return new ResponseEntity<TaskResponseIn>(incoming, HttpStatus.OK);
         }
-        return new ResponseEntity<ProjectResponseIn>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<TaskResponseIn>(HttpStatus.BAD_REQUEST);
     }
 
     @PreAuthorize(value="hasAuthority('USER')")

@@ -1,16 +1,18 @@
 package no.ntnu.mikaelr.model.dto.incoming;
 
-public class ProjectResponseIn {
+import java.util.List;
 
-    private String[] response;
+public class TaskResponseIn {
+
+    private List<String> response;
     private int projectId;
     private int taskId;
 
-    public String[] getResponse() {
+    public List<String> getResponse() {
         return response;
     }
 
-    public void setResponse(String[] response) {
+    public void setResponse(List<String> response) {
         this.response = response;
     }
 

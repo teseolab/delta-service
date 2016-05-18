@@ -1,15 +1,16 @@
 package no.ntnu.mikaelr.model.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "project_responses")
-public class ProjectResponse {
+@Table(name = "task_responses")
+public class TaskResponse {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Integer id;
-    private String[] response;
+    private Integer responseId;
+    private List<String> response;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
@@ -19,10 +20,9 @@ public class ProjectResponse {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public ProjectResponse() {}
+    public TaskResponse() {}
 
-    public ProjectResponse(String[] response, User user, Project project, Task task) {
-        this.id = id;
+    public TaskResponse(List<String> response, User user, Project project, Task task) {
         this.response = response;
         this.user = user;
         this.project = project;
@@ -33,13 +33,15 @@ public class ProjectResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_response_id", unique = true, nullable = false)
-    public Integer getId() {
-        return id;
+    @Column(name = "response_id", unique = true, nullable = false)
+    public Integer getResponseId() {
+        return responseId;
     }
 
-    @Column(name = "response", nullable = false)
-    public String[] getResponse() {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "task_response_elements", joinColumns = @JoinColumn(name = "response_id"))
+    @Column(name = "response_element", nullable = false)
+    public List<String> getResponse() {
         return response;
     }
 
@@ -65,16 +67,16 @@ public class ProjectResponse {
 
     // Attribute setters -----------------------------------------------------------------------------------------------
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setResponseId(Integer responseId) {
+        this.responseId = responseId;
     }
 
-    public void setResponse(String[] response) {
+
+    public void setResponse(List<String> response) {
         this.response = response;
     }
 
     // Relation setters ------------------------------------------------------------------------------------------------
-
 
     public void setUser(User user) {
         this.user = user;
