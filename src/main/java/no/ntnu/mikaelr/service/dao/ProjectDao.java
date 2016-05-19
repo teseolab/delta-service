@@ -51,11 +51,9 @@ public class ProjectDao {
         return project;
     }
 
-    public List<Task> getTasks(Integer projectId) {
+    public List<Task> getTasks(Project project) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
-        Project project = session.get(Project.class, projectId);
 
         Query query = session.createQuery("from Task where project = :project order by taskOrder");
         query.setParameter("project", project);

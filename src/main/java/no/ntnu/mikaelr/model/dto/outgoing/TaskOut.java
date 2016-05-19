@@ -8,6 +8,7 @@ public class TaskOut {
 
     private Integer id;
     private Integer order;
+    private boolean finished;
     private TaskType taskType;
     private String imageUri;
     private float latitude;
@@ -26,6 +27,14 @@ public class TaskOut {
 
     public Integer getOrder() {
         return order;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public void setOrder(Integer order) {

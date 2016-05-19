@@ -28,7 +28,12 @@ public class TestData {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-//        Project bycampus = projectDao.getProject(2);
+        createUser(session, "mikael", "123");
+
+        createProject(session);
+        Project bycampus = createProject2(session);
+        createProject3(session);
+
 //        createTask(
 //                session,
 //                bycampus,
@@ -37,6 +42,7 @@ public class TestData {
 //                63.416178f,
 //                10.402828f,
 //                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
+//                "",
 //                Arrays.asList(
 //                        "Dette området kunne ha blitt mye bedre utnyttet.",
 //                        "Jeg vil ha et lite skianlegg her.",
@@ -49,6 +55,7 @@ public class TestData {
 //                TaskType.TEXT_TASK,
 //                63.416799f,
 //                10.405833f,
+//                "",
 //                "Gå tilbake i Sem Sælands vei (der du kom fra). Neste punkt er langs denne veien.",
 //                Collections.singletonList("På din venstre side ser du en liten åpen plass i hjertet av Gløshaugen. Har du noen forslag til hvordan denne plassen kunne blitt brukt på en best mulig måte?"),
 //                "http://129.241.102.204:8080/images/skiboli");
@@ -59,12 +66,14 @@ public class TestData {
 //                TaskType.TEXT_TASK,
 //                63.416673f,
 //                10.404051f,
+//                "",
 //                "Fortsett fremover langs sentralbygget til du når en statue.",
-//                Collections.singletonList("Du står nå like ved Hangaren, en av Sit sine kantiner på Gløshaugen. I hvilken kantine pleier du å spise og hvorfor?"));
+//                Collections.singletonList("Du står nå like ved Hangaren, en av Sit sine kantiner på Gløshaugen. I hvilken kantine pleier du å spise og hvorfor?"),
+//                "");
 
 //        user = createUser(session);
 //
-        project = createProject(session);
+//        project = createProject(session);
 //        createProject2(session);
 //        createProject3(session);
 //
@@ -143,7 +152,7 @@ public class TestData {
 
         Task newTask = new Task();
         newTask.setProject(project);
-        newTask.setTaskOrder(1);
+        newTask.setTaskOrder(0);
         newTask.setTaskType(TaskType.SCALE_TASK);
         newTask.setLatitude(63.439724f);
         newTask.setLongitude(10.415015f);
@@ -162,7 +171,7 @@ public class TestData {
         session.save(newTask);
 
         Task newTask2 = new Task();
-        newTask2.setTaskOrder(2);
+        newTask2.setTaskOrder(1);
         newTask2.setProject(project);
         newTask2.setTaskType(TaskType.TEXT_TASK);
         newTask2.setLatitude(63.440595f);
@@ -173,7 +182,7 @@ public class TestData {
         session.save(newTask2);
 
         Task newTask3 = new Task();
-        newTask3.setTaskOrder(0);
+        newTask3.setTaskOrder(2);
         newTask3.setProject(project);
         newTask3.setTaskType(TaskType.ALTERNATIVE_TASK);
         newTask3.setLatitude(63.442737f);
@@ -201,20 +210,23 @@ public class TestData {
 
     }
 
-    private void createProject2(Session session) {
+    private Project createProject2(Session session) {
         Project project = new Project();
         project.setName("Gløshaugen");
         project.setDescription("Gløshaugen campus skal utvides");
+        project.setImageUri("129.241.102.204:8080/images/d8ef4dd5689a.jpg");
         project.setLatitude(63.419676f);
         project.setLongitude(10.401622f);
         session.save(project);
 
         createProjectTasks2(session, project);
+        return project;
     }
 
     private void createProjectTasks2(Session session, Project project) {
 
         Task newTask = new Task();
+        newTask.setTaskOrder(0);
         newTask.setProject(project);
         newTask.setTaskType(TaskType.SCALE_TASK);
         newTask.setLatitude(63.419582f);
@@ -229,9 +241,10 @@ public class TestData {
         taskElements.add(task2);
         taskElements.add(task3);
         newTask.setTaskElements(taskElements);
-        session.save(task1);
+        session.save(newTask);
 
         Task newTask2 = new Task();
+        newTask2.setTaskOrder(1);
         newTask2.setProject(project);
         newTask2.setTaskType(TaskType.TEXT_TASK);
         newTask2.setLatitude(63.418786f);
@@ -246,6 +259,7 @@ public class TestData {
         Project project = new Project();
         project.setName("Trondheim Torg");
         project.setDescription("Trondheim Torg skal fornyes. Det skal blant annet komme mange flere spiseplasser i området.");
+        project.setImageUri("129.241.102.204:8080/images/dsc016451.jpg");
         project.setLatitude(63.430493f);
         project.setLongitude(10.395041f);
         session.save(project);
@@ -256,6 +270,7 @@ public class TestData {
     private void createProjectTasks3(Session session, Project project) {
 
         Task newTask = new Task();
+        newTask.setTaskOrder(0);
         newTask.setProject(project);
         newTask.setTaskType(TaskType.SCALE_TASK);
         newTask.setLatitude(63.430253f);
@@ -270,9 +285,10 @@ public class TestData {
         taskElements.add(task2);
         taskElements.add(task3);
         newTask.setTaskElements(taskElements);
-        session.save(task1);
+        session.save(newTask);
 
         Task newTask2 = new Task();
+        newTask2.setTaskOrder(1);
         newTask2.setProject(project);
         newTask2.setTaskType(TaskType.TEXT_TASK);
         newTask2.setLatitude(63.430810f);

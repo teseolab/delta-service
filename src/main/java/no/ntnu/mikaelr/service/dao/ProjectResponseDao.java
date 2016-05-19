@@ -71,4 +71,18 @@ public class ProjectResponseDao {
         return numberOfTasksCompleted >= numberOfTasksForProject;
     }
 
+    public boolean taskIsFinished(User user, Project project, Task task) {
+
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Query query = session.createQuery("select count(pr) from TaskResponse pr where project = :project and task =:task and user = :user");
+        query.setParameter("project", project);
+        query.setParameter("task", task);
+        query.setParameter("user", user);
+
+        boolean taskIsFinished = (Long) query.uniqueResult() > 0;
+        session.close();
+        return taskIsFinished;
+    }
 }

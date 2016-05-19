@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "task_elements")
 public class TaskElement {
 
-    private Integer taskElementId
+    private Integer taskElementId;
     private List<String> taskElements;
 
     public List<String> getTaskElements() {

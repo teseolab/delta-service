@@ -72,13 +72,17 @@ public class ProjectController {
     @RequestMapping(value = "/{projectId}/tasks", method = RequestMethod.GET)
     public ResponseEntity<List<TaskOut>> getTasks(@PathVariable Integer projectId) {
 
-        List<Task> tasks = projectDao.getTasks(projectId);
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        User user = userDao.getUserById(userId);
+        Project project = projectDao.getProject(projectId);
+        List<Task> tasks = projectDao.getTasks(project);
         List<TaskOut> tasksOut = new ArrayList<TaskOut>();
 
         for (Task task : tasks) {
             TaskOut taskOut = new TaskOut();
             taskOut.setId(task.getTaskId());
             taskOut.setOrder(task.getTaskOrder());
+            taskOut.setFinished(projectResponseDao.taskIsFinished(user, project, task));
             taskOut.setTaskType(task.getTaskType());
             taskOut.setImageUri(task.getImageUri());
             taskOut.setLatitude(task.getLatitude());
