@@ -3,6 +3,7 @@ package no.ntnu.mikaelr.model.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class User {
     private Set<Agreement> agreements;
     private Set<Disagreement> disagreements;
     private List<LogRecord> logRecords;
+    private List<UserAchievement> achievements;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -109,6 +111,12 @@ public class User {
         return logRecords;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonManagedReference
+    public List<UserAchievement> getAchievements() {
+        return achievements;
+    }
+
     // Attribute setters -----------------------------------------------------------------------------------------------
 
     public void setId(Integer id) {
@@ -167,5 +175,9 @@ public class User {
 
     public void setLogRecords(List<LogRecord> logRecords) {
         this.logRecords = logRecords;
+    }
+
+    public void setAchievements(List<UserAchievement> achievements) {
+        this.achievements = achievements;
     }
 }

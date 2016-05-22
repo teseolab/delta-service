@@ -26,6 +26,9 @@ public class SuggestionDao {
     @Autowired
     private LogRecordDao logRecordDao;
 
+    @Autowired
+    private AchievementDao achievementDao;
+
     public List<Suggestion> getSuggestions(Integer projectId) {
 
         Session session = sessionFactory.openSession();
@@ -68,7 +71,9 @@ public class SuggestionDao {
             Agreement agreement = new Agreement(suggestion, user);
             logRecordDao.logAgreement(session, suggestion, user);
             user.incrementScore(Constants.POST_AGREEMENT_SCORE);
+            suggestion.getUser().incrementScore(Constants.RECEIVE_AGREEMENT_SCORE);
             session.save(agreement);
+            session.update(suggestion.getUser());
         }
 
         session.save(user);
@@ -80,6 +85,10 @@ public class SuggestionDao {
         Integer numberOfAgreements = suggestion.getAgreements().size();
         Integer numberOfDisagreements = suggestion.getDisagreements().size();
         session.close();
+
+        if (numberOfAgreements == 5) {
+            achievementDao.addAgreementAchievement(suggestion.getUser());
+        }
 
         MultiValueMap<String, String> result = new LinkedMultiValueMap<String, String>();
         result.add("agreements", numberOfAgreements.toString());
@@ -99,6 +108,8 @@ public class SuggestionDao {
         if (deleteAgreement(session, suggestion, user)) {
             logRecordDao.deleteAgreementLogRecord(session, suggestion, user);
             user.decrementScore(Constants.POST_AGREEMENT_SCORE);
+            suggestion.getUser().decrementScore(Constants.RECEIVE_AGREEMENT_SCORE);
+            session.update(suggestion.getUser());
         }
 
         Disagreement existingDisagreement = getDisagreement(session, suggestion, user);
@@ -263,6 +274,6 @@ public class SuggestionDao {
         session.getTransaction().commit();
         session.close();
         return suggestion;
-
     }
+
 }

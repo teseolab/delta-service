@@ -56,6 +56,11 @@ public class BeanConfig {
     }
 
     @Bean
+    public AchievementDao achievementDao() {
+        return new AchievementDao();
+    }
+
+    @Bean
     public SessionFactory sessionFactory() {
         return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
     }

@@ -2,6 +2,7 @@ package no.ntnu.mikaelr.service.dao;
 
 import no.ntnu.mikaelr.model.dto.incoming.UserIn;
 import no.ntnu.mikaelr.model.entities.User;
+import no.ntnu.mikaelr.model.entities.UserAchievement;
 import no.ntnu.mikaelr.model.entities.UserRole;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
@@ -129,5 +130,20 @@ public class UserDao {
         session.save(user);
         session.getTransaction().commit();
         session.close();
+    }
+
+    public List<UserAchievement> getUserAchievements(User user) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Query query = session.createQuery("from UserAchievement where user = :user order by date desc");
+        query.setParameter("user", user);
+
+        @SuppressWarnings("unchecked")
+        List<UserAchievement> userAchievements = query.list();
+
+        session.getTransaction().commit();
+        session.close();
+        return userAchievements;
     }
 }

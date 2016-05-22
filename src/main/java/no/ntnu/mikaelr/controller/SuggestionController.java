@@ -1,12 +1,13 @@
 package no.ntnu.mikaelr.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import no.ntnu.mikaelr.model.dto.incoming.SuggestionIn;
 import no.ntnu.mikaelr.model.dto.outgoing.*;
 import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.security.SessionUser;
+import no.ntnu.mikaelr.service.dao.AchievementDao;
 import no.ntnu.mikaelr.service.dao.LogRecordDao;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
+import no.ntnu.mikaelr.service.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +27,21 @@ public class SuggestionController {
     private SuggestionDao suggestionDao;
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     private LogRecordDao logRecordDao;
+
+    @Autowired
+    private AchievementDao achievementDao;
 
     @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<SuggestionOut> postSuggestion(@RequestBody SuggestionIn in) {
         Suggestion suggestion = suggestionDao.createSuggestion(in);
         SuggestionOut out = new SuggestionOut(suggestion);
+        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        achievementDao.addSuggestionAchievement(userId);
         return new ResponseEntity<SuggestionOut>(out, HttpStatus.OK);
     }
 
@@ -79,10 +88,8 @@ public class SuggestionController {
     public ResponseEntity<List<CommentOut>> postComment(@PathVariable Integer suggestionId, @RequestBody String commentText) {
 
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-
         List<Comment> comments = suggestionDao.postComment(suggestionId, userId, commentText);
         logRecordDao.logCommentPosted(suggestionId, userId);
-
         List<CommentOut> commentsOut = new ArrayList<CommentOut>();
 
         for (Comment comment : comments) {
@@ -97,6 +104,8 @@ public class SuggestionController {
             commentOut.setComment(comment.getComment());
             commentsOut.add(commentOut);
         }
+
+        achievementDao.addCommentAchievement(userId);
 
         return new ResponseEntity<List<CommentOut>>(commentsOut, HttpStatus.OK);
     }

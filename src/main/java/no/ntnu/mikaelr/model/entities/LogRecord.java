@@ -23,6 +23,7 @@ public class LogRecord {
     private User user;
     private Suggestion suggestion;
     private Project project;
+    private Achievement achievement;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -77,6 +78,12 @@ public class LogRecord {
         return project;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "achievement_id")
+    public Achievement getAchievement() {
+        return achievement;
+    }
+
     // Attribute setters -----------------------------------------------------------------------------------------------
 
     public void setId(Integer id) {
@@ -114,4 +121,7 @@ public class LogRecord {
         this.project = project;
     }
 
+    public void setAchievement(Achievement achievement) {
+        this.achievement = achievement;
+    }
 }

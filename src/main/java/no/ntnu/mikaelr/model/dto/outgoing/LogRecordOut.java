@@ -14,6 +14,7 @@ public class LogRecordOut {
 
     private Integer suggestionId;
     private Integer projectId;
+    private String achievementBadgeName;
 
     public static LogRecordOut fromLogRecord(LogRecord logRecord) {
 
@@ -24,6 +25,10 @@ public class LogRecordOut {
         logRecordOut.description = logRecord.getDescription();
         logRecordOut.type = logRecord.getType();
         logRecordOut.generatedScore = logRecord.getGeneratedScore();
+
+        if (logRecord.getType() == LogRecordType.ACHIEVEMENT && logRecord.getAchievement() != null) {
+            logRecordOut.setAchievementBadgeName(logRecord.getAchievement().getBadgeName());
+        }
 
         // TODO: Suggestion and project
 
@@ -84,5 +89,13 @@ public class LogRecordOut {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getAchievementBadgeName() {
+        return achievementBadgeName;
+    }
+
+    public void setAchievementBadgeName(String achievementBadgeName) {
+        this.achievementBadgeName = achievementBadgeName;
     }
 }

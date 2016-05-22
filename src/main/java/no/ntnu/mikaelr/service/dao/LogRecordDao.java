@@ -1,9 +1,6 @@
 package no.ntnu.mikaelr.service.dao;
 
-import no.ntnu.mikaelr.model.entities.LogRecord;
-import no.ntnu.mikaelr.model.entities.Project;
-import no.ntnu.mikaelr.model.entities.Suggestion;
-import no.ntnu.mikaelr.model.entities.User;
+import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.util.Constants;
 import no.ntnu.mikaelr.util.LogRecordType;
 import org.hibernate.Hibernate;
@@ -13,9 +10,13 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LogRecordDao {
+
+    private static final Logger log = Logger.getLogger(LogRecordDao.class.getName());
 
     @Autowired
     SessionFactory sessionFactory;
@@ -66,14 +67,28 @@ public class LogRecordDao {
     }
 
     public void logAgreement(Session session, Suggestion suggestion, User user) {
-        LogRecord logRecord = new LogRecord();
-        logRecord.setDate(Calendar.getInstance().getTime());
-        logRecord.setDescription("Du var enig i forslaget " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
-        logRecord.setType(LogRecordType.AGREEMENT);
-        logRecord.setGeneratedScore(Constants.POST_AGREEMENT_SCORE);
-        logRecord.setUser(user);
-        logRecord.setSuggestion(suggestion);
-        session.save(logRecord);
+
+        Date date = Calendar.getInstance().getTime();
+
+        LogRecord agreeLogRecord = new LogRecord();
+        agreeLogRecord.setDate(date);
+        agreeLogRecord.setDescription("Du var enig i forslaget " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
+        agreeLogRecord.setType(LogRecordType.AGREEMENT);
+        agreeLogRecord.setGeneratedScore(Constants.POST_AGREEMENT_SCORE);
+        agreeLogRecord.setUser(user);
+        agreeLogRecord.setSuggestion(suggestion);
+        session.save(agreeLogRecord);
+
+        if (!user.getId().equals(suggestion.getUser().getId())) {
+            LogRecord receivedAgreementLogRecord = new LogRecord();
+            receivedAgreementLogRecord.setDate(date);
+            receivedAgreementLogRecord.setDescription(user.getUsername() + " var enig i ditt forslag " + suggestion.getProject().getName() + ": " + suggestion.getTitle());
+            receivedAgreementLogRecord.setType(LogRecordType.SUGGESTION_AGREEMENT);
+            receivedAgreementLogRecord.setGeneratedScore(Constants.RECEIVE_AGREEMENT_SCORE);
+            receivedAgreementLogRecord.setUser(suggestion.getUser());
+            receivedAgreementLogRecord.setSuggestion(suggestion);
+            session.save(receivedAgreementLogRecord);
+        }
     }
 
     public void logDisagreement(Session session, Suggestion suggestion, User user) {
@@ -109,11 +124,22 @@ public class LogRecordDao {
     }
 
     public void deleteAgreementLogRecord(Session session, Suggestion suggestion, User user) {
-        Query query = session.createQuery("delete from LogRecord where suggestion = :suggestion and user = :user and type = :logType");
+        Query query = session.createQuery("from LogRecord where suggestion = :suggestion and user = :user and type = :logType");
         query.setParameter("suggestion", suggestion);
         query.setParameter("user", user);
         query.setParameter("logType", LogRecordType.AGREEMENT);
-        int recordsDeleted = query.executeUpdate();
+        LogRecord agreementLogRecord = (LogRecord) query.uniqueResult();
+        session.delete(agreementLogRecord);
+
+        if (user.getId() != suggestion.getUser().getId()) {
+            query = session.createQuery("from LogRecord where suggestion = :suggestion and user = :user and type = :logType and date = :date");
+            query.setParameter("suggestion", suggestion);
+            query.setParameter("user", suggestion.getUser());
+            query.setParameter("logType", LogRecordType.SUGGESTION_AGREEMENT);
+            query.setParameter("date", agreementLogRecord.getDate());
+            LogRecord receivedAgreementLogRecord = (LogRecord) query.uniqueResult();
+            session.delete(receivedAgreementLogRecord);
+        }
     }
 
     public void deleteDisagreementLogRecord(Session session, Suggestion suggestion, User user) {
@@ -121,7 +147,23 @@ public class LogRecordDao {
         query.setParameter("suggestion", suggestion);
         query.setParameter("user", user);
         query.setParameter("logType", LogRecordType.DISAGREEMENT);
-        int recordsDeleted = query.executeUpdate();
+        query.executeUpdate();
     }
 
+    public void logAchievement(User user, Achievement achievement) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        LogRecord logRecord = new LogRecord();
+        logRecord.setType(LogRecordType.ACHIEVEMENT);
+        logRecord.setAchievement(achievement);
+        logRecord.setDate(Calendar.getInstance().getTime());
+        logRecord.setUser(user);
+        logRecord.setDescription("Du mottok utmerkelsen " + achievement.getName());
+        logRecord.setGeneratedScore(Constants.GET_ACHIEVEMENT_SCORE);
+
+        session.save(logRecord);
+        session.getTransaction().commit();
+        session.close();
+    }
 }
