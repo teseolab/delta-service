@@ -27,21 +27,23 @@ public class TestData {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
-        User mikael = createUser("mikael", "123", "http://129.241.113.73:8080/images/kedhpyqycqvqdzllhzyj.jpg");
+        Project nyhavna = projectDao.getProject(1);
 
-        Achievement deltaker = createAchievement(Constants.ACHIEVEMENT_DELTAKER_V1, "Deltaker", "Regsitrere en bruker i Delta!", "ic_ach_deltaker_v1");
+//        User mikael = createAdminUser("mikael", "123", "http://129.241.113.73:8080/images/kedhpyqycqvqdzllhzyj.jpg");
+
+//        Achievement deltaker = createAchievement(Constants.ACHIEVEMENT_DELTAKER_V1, "Deltaker", "Regsitrere en bruker i Delta!", "ic_ach_deltaker_v1");
 //        createUserAchievement(mikael, deltaker);
-        Achievement profilbilde = createAchievement(Constants.ACHIEVEMENT_PROFILBILDE, "Hey good lookin!", "Laste opp et profilbilde", "ic_ach_profilbilde");
+//        Achievement profilbilde = createAchievement(Constants.ACHIEVEMENT_PROFILBILDE, "Hey good lookin!", "Laste opp et profilbilde", "ic_ach_profilbilde");
 //        createUserAchievement(mikael, profilbilde);
-        Achievement forslag = createAchievement(Constants.ACHIEVEMENT_DELTAKER_V2, "Deltaker v2", "Poste et forslag for første gang", "ic_ach_deltaker_v2");
+//        Achievement forslag = createAchievement(Constants.ACHIEVEMENT_DELTAKER_V2, "Deltaker v2", "Poste et forslag for første gang", "ic_ach_deltaker_v2");
 //        createUserAchievement(mikael, forslag);
-        Achievement kommentar = createAchievement(Constants.ACHIEVEMENT_KOMMENTARER_V1, "Icebreaker", "Poste fem kommentarer", "ic_ach_kommentarer_v1");
+//        Achievement kommentar = createAchievement(Constants.ACHIEVEMENT_KOMMENTARER_V1, "Icebreaker", "Poste fem kommentarer", "ic_ach_kommentarer_v1");
 //        createUserAchievement(mikael, kommentar);
-        Achievement tommelopp = createAchievement(Constants.ACHIEVEMENT_TOMMELOPP_V1, "Tommel opp", "Motta fem tommel opp på et forslag", "ic_ach_tommelopp");
+//        Achievement tommelopp = createAchievement(Constants.ACHIEVEMENT_TOMMELOPP_V1, "Tommel opp", "Motta fem tommel opp på et forslag", "ic_ach_tommelopp");
 //        createUserAchievement(mikael, tommelopp);
 
-        Project nyhavna = createNyhavnaProject();
-        createNyhavnaTasks(nyhavna);
+//        Project nyhavna = createNyhavnaProject();
+//        createNyhavnaTasks(nyhavna);
 //        createSuggestion(
 //                nyhavna,
 //                mikael,
@@ -49,11 +51,11 @@ public class TestData {
 //                "Jeg syntes flere av bygningene på Nyhavna har en viss sjarm over seg, og som burde bevares. Det er derfor trist å se at flere bygninger er i dårlig stand. Det burde brukes mer ressurser på å holde disse bygningene vedlike.",
 //                Calendar.getInstance().getTime());
 
-        Project bycampus = createBycampusProject();
-        createBycampusTasks(bycampus);
+//        Project bycampus = createBycampusProject();
+//        createBycampusTasks(bycampus);
 
-        Project torvet = createTorvetProject();
-        createTorvetTasks(torvet);
+//        Project torvet = createTorvetProject();
+//        createTorvetTasks(torvet);
 
         session.getTransaction().commit();
         session.close();
@@ -248,6 +250,20 @@ public class TestData {
         task.setTaskElements(tasks);
         task.setImageUri(imageUri);
         session.save(task);
+    }
+    private User createAdminUser(String username, String password, String avatarUri) {
+        User newUser = new User(username, passwordEncoder.encode(password));
+        newUser.setAvatarUri(avatarUri);
+        session.save(newUser);
+        UserRole userRole = new UserRole();
+        userRole.setRole("USER");
+        userRole.setUser(newUser);
+        session.save(userRole);
+        UserRole adminRole = new UserRole();
+        adminRole.setRole("ADMIN");
+        adminRole.setUser(newUser);
+        session.save(adminRole);
+        return newUser;
     }
     private User createUser(String username, String password, String avatarUri) {
         User newUser = new User(username, passwordEncoder.encode(password));

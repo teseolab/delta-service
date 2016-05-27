@@ -276,4 +276,14 @@ public class SuggestionDao {
         return suggestion;
     }
 
+    public void deleteSuggestion(Integer suggestionId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Suggestion suggestion = session.get(Suggestion.class, suggestionId);
+        session.delete(suggestion);
+
+        session.getTransaction().commit();
+        session.close();
+    }
 }

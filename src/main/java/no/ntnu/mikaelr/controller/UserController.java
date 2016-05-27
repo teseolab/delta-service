@@ -151,7 +151,7 @@ public class UserController {
             Achievement achievement = achievementDao.getAchievement(Constants.ACHIEVEMENT_KOMMENTARER_V1);
             return new ResponseEntity<Achievement>(achievement, HttpStatus.OK);
         }
-        return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
 
     @PreAuthorize(value="hasAuthority('USER')")

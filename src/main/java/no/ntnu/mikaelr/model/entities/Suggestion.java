@@ -1,6 +1,7 @@
 package no.ntnu.mikaelr.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import sun.rmi.runtime.Log;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class Suggestion {
     private List<Comment> comments;
     private Set<Agreement> agreements;
     private Set<Disagreement> disagreements;
+    private Set<LogRecord> logRecords;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -67,6 +69,7 @@ public class Suggestion {
         return details;
     }
 
+
     // Relation getters ------------------------------------------------------------------------------------------------
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -81,22 +84,28 @@ public class Suggestion {
         return project;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "suggestion")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "suggestion", cascade = CascadeType.ALL)
     @JsonManagedReference
     public List<Comment> getComments() {
         return comments;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion", cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion", cascade = CascadeType.ALL)
     @JsonManagedReference
     public Set<Agreement> getAgreements() {
         return agreements;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "suggestion", cascade = CascadeType.ALL)
     @JsonManagedReference
     public Set<Disagreement> getDisagreements() {
         return disagreements;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "suggestion", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    public Set<LogRecord> getLogRecords() {
+        return logRecords;
     }
 
     // Attribute setters -----------------------------------------------------------------------------------------------
@@ -144,5 +153,9 @@ public class Suggestion {
 
     public void setDisagreements(Set<Disagreement> disagreements) {
         this.disagreements = disagreements;
+    }
+
+    public void setLogRecords(Set<LogRecord> logRecords) {
+        this.logRecords = logRecords;
     }
 }
