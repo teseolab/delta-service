@@ -59,7 +59,7 @@ public class ProjectResponseDao {
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = userDao.getUserById(userId);
 
-        Query query = session.createQuery("select count(pr) from TaskResponse pr where project = :project and user = :user");
+        Query query = session.createQuery("select count(fm) from FinishedMission fm where project = :project and user = :user");
         query.setParameter("project", project);
         query.setParameter("user", user);
 
