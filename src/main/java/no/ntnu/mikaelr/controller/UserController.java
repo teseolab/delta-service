@@ -176,10 +176,16 @@ public class UserController {
     }
 
     @PreAuthorize(value="hasAuthority('USER')")
-    @RequestMapping(value = "/me/achievements", method = RequestMethod.GET)
-    public ResponseEntity<List<AchievementOut>> getUserAchievements() {
+    @RequestMapping(value = "/{userIdOrMe}/achievements", method = RequestMethod.GET)
+    public ResponseEntity<List<AchievementOut>> getUserAchievements(@PathVariable String userIdOrMe) {
 
-        int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        int userId;
+        if (userIdOrMe.equals("me")) {
+            userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        } else {
+            userId = Integer.valueOf(userIdOrMe);
+        }
+
         User user = userDao.getUserById(userId);
         List<UserAchievement> userAchievements = userDao.getUserAchievements(user);
         List<AchievementOut> achievementsOut = new ArrayList<AchievementOut>();

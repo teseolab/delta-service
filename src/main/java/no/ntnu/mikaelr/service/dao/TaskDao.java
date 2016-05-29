@@ -1,6 +1,7 @@
 package no.ntnu.mikaelr.service.dao;
 
 import no.ntnu.mikaelr.model.entities.Task;
+import no.ntnu.mikaelr.model.entities.TaskQuestion;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,4 +26,14 @@ public class TaskDao {
         return task;
     }
 
+    public TaskQuestion getTaskQuestion(Integer questionId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        TaskQuestion taskQuestion = session.get(TaskQuestion.class, questionId);
+
+        session.getTransaction().commit();
+        session.close();
+        return taskQuestion;
+    }
 }

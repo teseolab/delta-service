@@ -11,11 +11,12 @@ public class TaskOut {
     private boolean finished;
     private TaskType taskType;
     private String imageUri;
+    private String hint;
     private float latitude;
     private float longitude;
-    private String hint;
-    private List<String> taskElements;
     private String description;
+
+    private List<TaskQuestionOut> taskQuestions;
 
     public Integer getId() {
         return id;
@@ -29,16 +30,16 @@ public class TaskOut {
         return order;
     }
 
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public boolean isFinished() {
         return finished;
     }
 
     public void setFinished(boolean finished) {
         this.finished = finished;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
     }
 
     public TaskType getTaskType() {
@@ -57,6 +58,14 @@ public class TaskOut {
         this.imageUri = imageUri;
     }
 
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
+
     public float getLatitude() {
         return latitude;
     }
@@ -73,28 +82,19 @@ public class TaskOut {
         this.longitude = longitude;
     }
 
-    public String getHint() {
-        return hint;
-    }
-
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
-
-
-    public List<String> getTaskElements() {
-        return taskElements;
-    }
-
-    public void setTaskElements(List<String> taskElements) {
-        this.taskElements = taskElements;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<TaskQuestionOut> getTaskQuestions() {
+        return taskQuestions;
+    }
+
+    public void setTaskQuestions(List<TaskQuestionOut> taskQuestions) {
+        this.taskQuestions = taskQuestions;
     }
 }

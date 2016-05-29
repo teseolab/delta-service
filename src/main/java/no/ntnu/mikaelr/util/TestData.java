@@ -27,9 +27,59 @@ public class TestData {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Project nyhavna = projectDao.getProject(1);
+//        Project testProject = projectDao.getProject(1);
 
-//        User mikael = createAdminUser("mikael", "123", "http://129.241.113.73:8080/images/kedhpyqycqvqdzllhzyj.jpg");
+        Project testProject = new Project();
+        testProject.setLatitude(10.304736f);
+        testProject.setLongitude(63.3481f);
+        testProject.setDescription("Testprosjekt");
+        testProject.setName("Testprosjekt");
+        session.save(testProject);
+
+        createTask(
+                testProject,
+                0,
+                TaskType.ALTERNATIVE_TASK,
+                63.4164f,
+                10.4027f,
+                "Gå i riktig retning",
+                "Velg et alternativ for hvert spørsmål.",
+                Arrays.asList(
+                        "Hvis jeg var en fugl hadde jeg...",
+                        "Hvis jeg var en hund hadde jeg..."),
+                Arrays.asList(
+                        Arrays.asList("Flydd høyt", "Badet i en damm", "Plaget katter"),
+                        Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
+                null);
+
+        List<String> scale = Arrays.asList("Helt uenig", "Uenig", "Vet ikke", "Enig", "Helt enig");
+
+        createTask(
+                testProject,
+                1,
+                TaskType.SCALE_TASK,
+                63.416178f,
+                10.402828f,
+                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
+                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+                Arrays.asList(
+                        "Dette området kunne ha blitt mye bedre utnyttet.",
+                        "Jeg vil ha et lite skianlegg her.",
+                        "Dette er en god plass for å sette opp flere studentboliger."),
+                Arrays.asList(scale, scale, scale),
+                null);
+
+        createTask(
+                testProject,
+                2,
+                TaskType.TEXT_TASK,
+                63.41615f,
+                10.4027f,
+                "Gå til du blir sliten.",
+                "Dette er beskrivelse av oppgave.",
+                Collections.singletonList("Hva syntes du om dette forslaget?"),
+                null,
+                null);
 
 //        Achievement deltaker = createAchievement(Constants.ACHIEVEMENT_DELTAKER_V1, "Deltaker", "Regsitrere en bruker i Delta!", "ic_ach_deltaker_v1");
 //        createUserAchievement(mikael, deltaker);
@@ -71,69 +121,69 @@ public class TestData {
                     "129.241.102.204:8080/images/d8ef4dd5689a.jpg");
     }
 
-    private void createBycampusTasks(Project bycampus) {
-        createTask(
-                bycampus,
-                0,
-                TaskType.SCALE_TASK,
-                63.419582f,
-                10.400352f,
-                "Gå ut på gresset til høyre.",
-                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
-                Arrays.asList(
-                        "Utsikten må bevares.",
-                        "Dette burde være et friluftsområde åpent for alle.",
-                        "Det burde være flere benker her."
-                ),
-                null);
-
-        createTask(
-                bycampus,
-                1,
-                TaskType.TEXT_TASK,
-                63.418786f,
-                10.402683f,
-                "Bak hovedbygget er en firkantet plen. Gå dit.",
-                "Det er foreslått å bygge noe her. Hva tenker du om det?",
-                null,
-                null);
-
-        createTask(
-                bycampus,
-                2,
-                TaskType.TEXT_TASK,
-                63.416673f,
-                10.404051f,
-                "Fortsett fremover langs sentralbygget til du når en statue.",
-                "Du står nå like ved Hangaren, en av Sit sine kantiner på Gløshaugen. I hvilken kantine pleier du å spise og hvorfor?",
-                null,
-                null);
-
-        createTask(
-                bycampus,
-                3,
-                TaskType.SCALE_TASK,
-                63.416178f,
-                10.402828f,
-                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
-                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
-                Arrays.asList(
-                        "Dette området kunne ha blitt mye bedre utnyttet.",
-                        "Jeg vil ha et lite skianlegg her.",
-                        "Dette er en god plass for å sette opp flere studentboliger."),
-                null);
-
-        createTask(
-                bycampus,
-                4,
-                TaskType.TEXT_TASK,
-                63.416799f,
-                10.405833f,
-                "Gå tilbake i Sem Sælands vei (der du kom fra). Neste punkt er langs denne veien.",
-                "På din venstre side ser du en liten åpen plass i hjertet av Gløshaugen. Har du noen forslag til hvordan denne plassen kunne blitt brukt på en best mulig måte?",
-                null,
-                null);
-    }
+//    private void createBycampusTasks(Project bycampus) {
+//        createTask(
+//                bycampus,
+//                0,
+//                TaskType.SCALE_TASK,
+//                63.419582f,
+//                10.400352f,
+//                "Gå ut på gresset til høyre.",
+//                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+//                Arrays.asList(
+//                        "Utsikten må bevares.",
+//                        "Dette burde være et friluftsområde åpent for alle.",
+//                        "Det burde være flere benker her."
+//                ),
+//                null);
+//
+//        createTask(
+//                bycampus,
+//                1,
+//                TaskType.TEXT_TASK,
+//                63.418786f,
+//                10.402683f,
+//                "Bak hovedbygget er en firkantet plen. Gå dit.",
+//                "Det er foreslått å bygge noe her. Hva tenker du om det?",
+//                null,
+//                null);
+//
+//        createTask(
+//                bycampus,
+//                2,
+//                TaskType.TEXT_TASK,
+//                63.416673f,
+//                10.404051f,
+//                "Fortsett fremover langs sentralbygget til du når en statue.",
+//                "Du står nå like ved Hangaren, en av Sit sine kantiner på Gløshaugen. I hvilken kantine pleier du å spise og hvorfor?",
+//                null,
+//                null);
+//
+//        createTask(
+//                bycampus,
+//                3,
+//                TaskType.SCALE_TASK,
+//                63.416178f,
+//                10.402828f,
+//                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
+//                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+//                Arrays.asList(
+//                        "Dette området kunne ha blitt mye bedre utnyttet.",
+//                        "Jeg vil ha et lite skianlegg her.",
+//                        "Dette er en god plass for å sette opp flere studentboliger."),
+//                null);
+//
+//        createTask(
+//                bycampus,
+//                4,
+//                TaskType.TEXT_TASK,
+//                63.416799f,
+//                10.405833f,
+//                "Gå tilbake i Sem Sælands vei (der du kom fra). Neste punkt er langs denne veien.",
+//                "På din venstre side ser du en liten åpen plass i hjertet av Gløshaugen. Har du noen forslag til hvordan denne plassen kunne blitt brukt på en best mulig måte?",
+//                null,
+//                null);
+//    }
 
     private Project createNyhavnaProject() {
         return createProject(
@@ -143,80 +193,80 @@ public class TestData {
                     10.419620f,
                     "https://www.trondheim.kommune.no/multimedia/1115028694/Fotoill.-3_stort-oversiktsbilde.jpg");
     }
-    private void createNyhavnaTasks(Project nyhavna) {
-        createTask(
-                nyhavna,
-                0,
-                TaskType.SCALE_TASK,
-                63.439724f,
-                10.415015f,
-                "Følg Styrmannsgata ut mot bryggen.",
-                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
-                Arrays.asList(
-                        "Dette er en fin plass.",
-                        "Dette burde være et friluftsområde åpent for alle.",
-                        "Området burde være forebeholdt industri."
-                ),
-                "http://www.koteng.no/multimedia/570/DJI00021.jpg");
-
-        createTask(
-                nyhavna,
-                1,
-                TaskType.TEXT_TASK,
-                63.440595f,
-                10.413505f,
-                "Gå gjennom det nærmeste veikrysset og ut mot kaia.",
-                "Dette bildet vister mange bygg. Beskriv kort hva du tenker om dette forslaget.",
-                null,
-                "http://trondheimhavn.no/uploads/bilder/nyheter/2011/10/111026+Kanalbo.jpg");
-
-        createTask(
-                nyhavna,
-                2,
-                TaskType.ALTERNATIVE_TASK,
-                63.442737f,
-                10.415833f,
-                "Gå lenger ut",
-                "Hva vil du ha her?",
-                Arrays.asList("Bensinstasjon", "Isbar", "Drive-in kino", "Rema 1000", "Fotballbane", "Badebasseng", "Annet"),
-                "http://2.bp.blogspot.com/-Jfll5rbk7YI/UHsZ_Vt6pfI/AAAAAAAAJ_E/hvZ6WwDt778/s1600/IMG_5161-Sollys-ved-Nyhavna_1.jpg");
-    }
-
-    private Project createTorvetProject() {
-        return createProject(
-                "Trondheim Torg",
-                "Trondheim Torg skal fornyes. Det skal blant annet komme mange flere spiseplasser i området.",
-                63.430493f,
-                10.395041f,
-                "129.241.102.204:8080/images/dsc016451.jpg"
-        );
-    }
+//    private void createNyhavnaTasks(Project nyhavna) {
+//        createTask(
+//                nyhavna,
+//                0,
+//                TaskType.SCALE_TASK,
+//                63.439724f,
+//                10.415015f,
+//                "Følg Styrmannsgata ut mot bryggen.",
+//                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+//                Arrays.asList(
+//                        "Dette er en fin plass.",
+//                        "Dette burde være et friluftsområde åpent for alle.",
+//                        "Området burde være forebeholdt industri."
+//                ),
+//                "http://www.koteng.no/multimedia/570/DJI00021.jpg");
+//
+//        createTask(
+//                nyhavna,
+//                1,
+//                TaskType.TEXT_TASK,
+//                63.440595f,
+//                10.413505f,
+//                "Gå gjennom det nærmeste veikrysset og ut mot kaia.",
+//                "Dette bildet vister mange bygg. Beskriv kort hva du tenker om dette forslaget.",
+//                null,
+//                "http://trondheimhavn.no/uploads/bilder/nyheter/2011/10/111026+Kanalbo.jpg");
+//
+//        createTask(
+//                nyhavna,
+//                2,
+//                TaskType.ALTERNATIVE_TASK,
+//                63.442737f,
+//                10.415833f,
+//                "Gå lenger ut",
+//                "Hva vil du ha her?",
+//                Arrays.asList("Bensinstasjon", "Isbar", "Drive-in kino", "Rema 1000", "Fotballbane", "Badebasseng", "Annet"),
+//                "http://2.bp.blogspot.com/-Jfll5rbk7YI/UHsZ_Vt6pfI/AAAAAAAAJ_E/hvZ6WwDt778/s1600/IMG_5161-Sollys-ved-Nyhavna_1.jpg");
+//    }
+//
+//    private Project createTorvetProject() {
+//        return createProject(
+//                "Trondheim Torg",
+//                "Trondheim Torg skal fornyes. Det skal blant annet komme mange flere spiseplasser i området.",
+//                63.430493f,
+//                10.395041f,
+//                "129.241.102.204:8080/images/dsc016451.jpg"
+//        );
+//    }
 
     private void createTorvetTasks(Project torvet) {
-        createTask(
-                torvet,
-                0,
-                TaskType.SCALE_TASK,
-                63.430253f,
-                10.397717f,
-                "Gå østover i Kongens gate mot Vår Frue kirke.",
-                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
-                Arrays.asList(
-                        "Det burde være restauranter langs denne strekningen.",
-                        "Hele strekningen burde bli omgjort til gågate",
-                        "Det burde være flere benker her."),
-                null);
-
-        createTask(
-                torvet,
-                1,
-                TaskType.TEXT_TASK,
-                63.430810f,
-                10.395941f,
-                "Gå tilbake til torget og opp i øvre nordre hjørne av torgsplassen.",
-                "Se utover torget og forestill deg et yrende folkeliv. Hva ønsker du at man skal kunne gjøre på torget?",
-                null,
-                null);
+//        createTask(
+//                torvet,
+//                0,
+//                TaskType.SCALE_TASK,
+//                63.430253f,
+//                10.397717f,
+//                "Gå østover i Kongens gate mot Vår Frue kirke.",
+//                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+//                Arrays.asList(
+//                        "Det burde være restauranter langs denne strekningen.",
+//                        "Hele strekningen burde bli omgjort til gågate",
+//                        "Det burde være flere benker her."),
+//                null);
+//
+//        createTask(
+//                torvet,
+//                1,
+//                TaskType.TEXT_TASK,
+//                63.430810f,
+//                10.395941f,
+//                "Gå tilbake til torget og opp i øvre nordre hjørne av torgsplassen.",
+//                "Se utover torget og forestill deg et yrende folkeliv. Hva ønsker du at man skal kunne gjøre på torget?",
+//                null,
+//                null);
     }
     private Project createProject(String name, String description, float latitude, float longitude, String imageUri) {
         Project project = new Project();
@@ -238,18 +288,27 @@ public class TestData {
         suggestion.setProject(project);
         session.save(suggestion);
     }
-    private void createTask(Project project, int order, TaskType taskType, float latitude, float longitude, String hint, String description, List<String> tasks, String imageUri) {
+    private void createTask(Project project, int order, TaskType taskType, float latitude, float longitude, String hint, String description, List<String> questions, List<List<String>> alternatives, String imageUri) {
         Task task = new Task();
         task.setTaskOrder(order);
+        task.setImageUri(imageUri);
         task.setProject(project);
         task.setTaskType(taskType);
         task.setLatitude(latitude);
         task.setLongitude(longitude);
         task.setHint(hint);
         task.setDescription(description);
-        task.setTaskElements(tasks);
-        task.setImageUri(imageUri);
         session.save(task);
+
+        for (int i = 0; i < questions.size(); i++) {
+            TaskQuestion taskQuestion = new TaskQuestion();
+            taskQuestion.setQuestion(questions.get(i));
+            if (alternatives != null) {
+                taskQuestion.setAlternatives(alternatives.get(i));
+            }
+            taskQuestion.setTask(task);
+            session.save(taskQuestion);
+        }
     }
     private User createAdminUser(String username, String password, String avatarUri) {
         User newUser = new User(username, passwordEncoder.encode(password));
@@ -293,4 +352,11 @@ public class TestData {
         return userAchievement;
     }
 
+    public void createAdmin() {
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        User mikael = createAdminUser("mikael", "123", "http://129.241.113.73:8080/images/kedhpyqycqvqdzllhzyj.jpg");
+        session.getTransaction().commit();
+        session.close();
+    }
 }

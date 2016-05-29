@@ -34,14 +34,14 @@ public class ProjectResponseDao {
         List<String> response = incoming.getResponse();
         int userId = ((SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         User user = userDao.getUserById(userId);
-        Project project = projectDao.getProject(incoming.getProjectId());
-        Task task = taskDao.getTask(incoming.getTaskId());
+        TaskQuestion question = taskDao.getTaskQuestion(incoming.getQuestionId());
 
-        TaskResponse taskResponse = new TaskResponse(response, user, project, task);
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setResponse(response);
+        taskResponse.setUser(user);
+        taskResponse.setQuestion(question);
 
-        if (project != null) {
-            Hibernate.initialize(taskResponse);
-        }
+        Hibernate.initialize(taskResponse);
 
         session.save(taskResponse);
         session.getTransaction().commit();
@@ -71,15 +71,14 @@ public class ProjectResponseDao {
         return numberOfTasksCompleted >= numberOfTasksForProject;
     }
 
-    public boolean taskIsFinished(User user, Project project, Task task) {
+    public boolean questionIsAnswered(User user, TaskQuestion question) {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createQuery("select count(pr) from TaskResponse pr where project = :project and task =:task and user = :user");
-        query.setParameter("project", project);
-        query.setParameter("task", task);
+        Query query = session.createQuery("select count(tr) from TaskResponse tr where user =:user and question = :question");
         query.setParameter("user", user);
+        query.setParameter("question", question);
 
         boolean taskIsFinished = (Long) query.uniqueResult() > 0;
         session.close();

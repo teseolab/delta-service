@@ -21,7 +21,7 @@ public class Task {
     private float longitude;
     private String hint;
     private String description;
-    private List<String> taskElements;
+    private List<TaskQuestion> questions;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
@@ -75,13 +75,6 @@ public class Task {
         return description;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "task_elements", joinColumns = @JoinColumn(name = "task_id"))
-    @Column(name = "task_element", nullable = false)
-    public List<String> getTaskElements() {
-        return taskElements;
-    }
-
     // Relation getters ------------------------------------------------------------------------------------------------
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -89,6 +82,11 @@ public class Task {
     @JsonBackReference
     public Project getProject() {
         return project;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "task")
+    public List<TaskQuestion> getQuestions() {
+        return questions;
     }
 
     // Attribute setters -----------------------------------------------------------------------------------------------
@@ -124,13 +122,14 @@ public class Task {
         this.description = description;
     }
 
-    public void setTaskElements(List<String> taskElements) {
-        this.taskElements = taskElements;
-    }
-
     // Relation setters ------------------------------------------------------------------------------------------------
 
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public void setQuestions(List<TaskQuestion> questions) {
+        this.questions = questions;
+    }
+
 }

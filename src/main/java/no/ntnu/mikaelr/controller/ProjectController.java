@@ -68,7 +68,7 @@ public class ProjectController {
         return new ResponseEntity<ProjectOutgoing>(response, HttpStatus.OK);
     }
 
-    //@PreAuthorize(value="hasAuthority('USER')")
+    @PreAuthorize(value="hasAuthority('USER')")
     @RequestMapping(value = "/{projectId}/tasks", method = RequestMethod.GET)
     public ResponseEntity<List<TaskOut>> getTasks(@PathVariable Integer projectId) {
 
@@ -82,14 +82,25 @@ public class ProjectController {
             TaskOut taskOut = new TaskOut();
             taskOut.setId(task.getTaskId());
             taskOut.setOrder(task.getTaskOrder());
-            taskOut.setFinished(projectResponseDao.taskIsFinished(user, project, task));
             taskOut.setTaskType(task.getTaskType());
             taskOut.setImageUri(task.getImageUri());
+            taskOut.setHint(task.getHint());
             taskOut.setLatitude(task.getLatitude());
             taskOut.setLongitude(task.getLongitude());
             taskOut.setDescription(task.getDescription());
-            taskOut.setTaskElements(task.getTaskElements());
-            taskOut.setHint(task.getHint());
+
+            List<TaskQuestionOut> questionsOut = new ArrayList<TaskQuestionOut>();
+            for (TaskQuestion question : task.getQuestions()) {
+                if (!taskOut.isFinished()) {
+                    taskOut.setFinished(projectResponseDao.questionIsAnswered(user, question));
+                }
+                TaskQuestionOut questionOut = new TaskQuestionOut();
+                questionOut.setId(question.getQuestionId());
+                questionOut.setQuestion(question.getQuestion());
+                questionOut.setAlternatives(question.getAlternatives());
+                questionsOut.add(questionOut);
+            }
+            taskOut.setTaskQuestions(questionsOut);
             tasksOut.add(taskOut);
         }
 
@@ -97,15 +108,32 @@ public class ProjectController {
 
     }
 
-    @PreAuthorize(value="hasAuthority('USER')")
-    @RequestMapping(value = "/{projectId}/responses", method = RequestMethod.POST)
-    public ResponseEntity<TaskResponseIn> postResponse(@PathVariable Integer projectId, @RequestBody TaskResponseIn incoming) {
+//    @PreAuthorize(value="hasAuthority('USER')")
+//    @RequestMapping(value = "/{projectId}/responses", method = RequestMethod.POST)
+//    public ResponseEntity<TaskResponseIn> postResponse(@PathVariable Integer projectId, @RequestBody TaskResponseIn incoming) {
+//
+//        if (projectId == incoming.getProjectId()) {
+//            projectResponseDao.createProjectResponse(incoming);
+//            return new ResponseEntity<TaskResponseIn>(incoming, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<TaskResponseIn>(HttpStatus.BAD_REQUEST);
+//    }
 
-        if (projectId == incoming.getProjectId()) {
-            projectResponseDao.createProjectResponse(incoming);
-            return new ResponseEntity<TaskResponseIn>(incoming, HttpStatus.OK);
+    @PreAuthorize(value="hasAuthority('USER')")
+    @RequestMapping(value = "/taskResponses", method = RequestMethod.POST)
+    public ResponseEntity postResponse(@RequestBody List<TaskResponseIn> incoming) {
+
+        for (TaskResponseIn taskResponseIn : incoming) {
+            projectResponseDao.createProjectResponse(taskResponseIn);
         }
-        return new ResponseEntity<TaskResponseIn>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity(HttpStatus.OK);
+
+//        if (projectId == incoming.getProjectId()) {
+//            projectResponseDao.createProjectResponse(incoming);
+//            return new ResponseEntity<TaskResponseIn>(incoming, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<TaskResponseIn>(HttpStatus.BAD_REQUEST);
     }
 
     @PreAuthorize(value="hasAuthority('USER')")

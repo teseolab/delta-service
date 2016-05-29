@@ -1,6 +1,7 @@
 package no.ntnu.mikaelr.service.dao;
 
 import no.ntnu.mikaelr.model.dto.incoming.UserIn;
+import no.ntnu.mikaelr.model.entities.Suggestion;
 import no.ntnu.mikaelr.model.entities.User;
 import no.ntnu.mikaelr.model.entities.UserAchievement;
 import no.ntnu.mikaelr.model.entities.UserRole;
@@ -145,5 +146,16 @@ public class UserDao {
         session.getTransaction().commit();
         session.close();
         return userAchievements;
+    }
+
+    public void deleteUser(Integer userId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        User user = session.get(User.class, userId);
+        session.delete(user);
+
+        session.getTransaction().commit();
+        session.close();
     }
 }

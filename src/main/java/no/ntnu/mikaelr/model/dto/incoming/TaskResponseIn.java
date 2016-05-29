@@ -4,9 +4,16 @@ import java.util.List;
 
 public class TaskResponseIn {
 
+    private Integer questionId;
     private List<String> response;
-    private int projectId;
-    private int taskId;
+
+    public Integer getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
+    }
 
     public List<String> getResponse() {
         return response;
@@ -16,19 +23,4 @@ public class TaskResponseIn {
         this.response = response;
     }
 
-    public int getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
 }

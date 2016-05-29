@@ -15,19 +15,11 @@ public class TaskResponse {
     // Relations -------------------------------------------------------------------------------------------------------
 
     private User user;
-    private Project project;
-    private Task task;
+    private TaskQuestion question;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public TaskResponse() {}
-
-    public TaskResponse(List<String> response, User user, Project project, Task task) {
-        this.response = response;
-        this.user = user;
-        this.project = project;
-        this.task = task;
-    }
 
     // Attribute getters -----------------------------------------------------------------------------------------------
 
@@ -54,15 +46,9 @@ public class TaskResponse {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id", nullable = false)
-    public Project getProject() {
-        return project;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id", nullable = false)
-    public Task getTask() {
-        return task;
+    @JoinColumn(name = "question_id", nullable = false)
+    public TaskQuestion getQuestion() {
+        return question;
     }
 
     // Attribute setters -----------------------------------------------------------------------------------------------
@@ -82,11 +68,7 @@ public class TaskResponse {
         this.user = user;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
+    public void setQuestion(TaskQuestion task) {
+        this.question = task;
     }
 }

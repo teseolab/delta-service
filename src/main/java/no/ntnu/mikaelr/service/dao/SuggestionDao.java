@@ -206,7 +206,7 @@ public class SuggestionDao {
 
         Suggestion suggestion = session.get(Suggestion.class, suggestionId);
 
-        Query query = session.createQuery("from Comment where suggestion = :suggestion order by date desc");
+        Query query = session.createQuery("from Comment where suggestion = :suggestion order by date asc");
         query.setParameter("suggestion", suggestion);
 
         @SuppressWarnings("unchecked")

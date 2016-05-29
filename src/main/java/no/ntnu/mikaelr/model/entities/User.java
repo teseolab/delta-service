@@ -31,6 +31,7 @@ public class User {
     private Set<Disagreement> disagreements;
     private List<LogRecord> logRecords;
     private List<UserAchievement> achievements;
+    private List<TaskResponse> taskResponses;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -72,49 +73,54 @@ public class User {
 
     // Relation getters ------------------------------------------------------------------------------------------------
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     public Set<UserRole> getRoles() {
         return roles;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     public Set<Suggestion> getSuggestions() {
         return suggestions;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     public Set<Comment> getComments() {
         return comments;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     public Set<FinishedMission> getFinishedMissions() {
         return finishedMissions;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     public Set<Agreement> getAgreements() {
         return agreements;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     public Set<Disagreement> getDisagreements() {
         return disagreements;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     public List<LogRecord> getLogRecords() {
         return logRecords;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     public List<UserAchievement> getAchievements() {
         return achievements;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    public List<TaskResponse> getTaskResponses() {
+        return taskResponses;
     }
 
     // Attribute setters -----------------------------------------------------------------------------------------------
@@ -179,5 +185,9 @@ public class User {
 
     public void setAchievements(List<UserAchievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public void setTaskResponses(List<TaskResponse> taskResponses) {
+        this.taskResponses = taskResponses;
     }
 }
