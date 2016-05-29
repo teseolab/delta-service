@@ -52,11 +52,27 @@ public class TestData {
                         Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
                 null);
 
+        createTask(
+                testProject,
+                1,
+                TaskType.ALTERNATIVE_TASK_MULTI,
+                63.418f,
+                10.404f,
+                "Fortsett i riktig retning",
+                "Velg et eller flere alternativ for hvert spørsmål.",
+                Arrays.asList(
+                        "Hvis jeg var en fugl hadde jeg...",
+                        "Hvis jeg var en hund hadde jeg..."),
+                Arrays.asList(
+                        Arrays.asList("Flydd høyt", "Badet i en damm", "Plaget katter"),
+                        Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
+                null);
+
         List<String> scale = Arrays.asList("Helt uenig", "Uenig", "Vet ikke", "Enig", "Helt enig");
 
         createTask(
                 testProject,
-                1,
+                2,
                 TaskType.SCALE_TASK,
                 63.416178f,
                 10.402828f,
@@ -71,7 +87,7 @@ public class TestData {
 
         createTask(
                 testProject,
-                2,
+                3,
                 TaskType.TEXT_TASK,
                 63.41615f,
                 10.4027f,
