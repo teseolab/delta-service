@@ -43,6 +43,24 @@ public class TestData {
                         Arrays.asList("Til fots", "Med sykkel", "Med buss", "Med scooter/moped", "Med bil", "Med båt", "Med tog")),
                 "http://129.241.113.73:8080/images/togstasjon.jpg");
 
+        createTask(
+                nyhavna,
+                1,
+                TaskType.ALTERNATIVE_TASK_MULTI,
+                63.43883f,
+                10.41813f,
+                "Følg gangfeltet under jernbanen, kryss veien og ta til høyre langs Kjeldsberg Kaffebrenneri. Følg gangfeltet til du står mellom to rundkjøringer.",
+                "Mye av industrien på Nyhavna skal omlokaliseres for å gjøre plass til blant annet boliger.",
+                Arrays.asList(
+                        "Hvis jeg skal vurdere å bo på Nyhavna, er det for meg viktig med…",
+                        "Hvis jeg skal vurdere å bo på Nyhavna, er det for meg viktig med at det finnes boliger som er…",
+                        "Hvis jeg skal vurdere å bo på Nyhavna, er det for meg viktig med nærhet til …"),
+                Arrays.asList(
+                        Arrays.asList("God tilgjengengelighet med bil", "Store fellesområder", "Offentlige parker", "Sykkelparkering", "Utsikt til vannet", "Gode solforhold", "Å slippe å ha bil"),
+                        Arrays.asList("Billige", "Familievennlige", "Store", "Små", "Luksuriøse", "Med utleiemuligheter"),
+                        Arrays.asList("Butikker", "Restauranter", "Havna", "Industrivirksomheter", "Kunstnermiljø", "Universitet", "Barnehage", "Barneskole", "Midtbyen", "Ladestien")),
+                "http://129.241.113.73:8080/images/fyringsbunkeren.jpg");
+
         List<String> scale = Arrays.asList("Helt uenig", "Uenig", "Nøytral", "Enig", "Helt enig");
 
         createTask(
@@ -66,13 +84,25 @@ public class TestData {
                 TaskType.ALTERNATIVE_TASK_MULTI,
                 63.44209f,
                 10.42082f,
-                "", // hint
-                "Nylig ble et prosjekt for å rense sjøbunnen i havneområdet ferdigstilt. Dette innebar å grave opp forurenset sjøbunn og plassere det i såkalte deponier. Hvordan dette fungerer kan du lese mer om på renerehavn.no.", // description
+                "Gå tilbake til rundkjøringen med et stor anker i midten. Ta til venstre i rundkjøringen og følg  Kobbes gate ut på kaia.",
+                "Nylig ble et prosjekt for å rense sjøbunnen i havneområdet ferdigstilt. Dette innebar å grave opp forurenset sjøbunn og plassere det i såkalte deponier. Hvordan dette fungerer kan du lese mer om på renerehavn.no.",
                 Collections.singletonList(
                         "Området ytterst på kaia skal etter planen gjøres om til en offentlig park. Hva kunne du tenke deg å bruke denne parken til? Du kan velge opp til flere alternativer."),
                 Collections.singletonList(
                         Arrays.asList("Dyrke grønnsaker", "Skate", "Leke", "Grille", "Sitte på gresset", "Slikke sol", "Treffe mennesker", "Spille ball", "Kaste frisbee")),
                 "http://129.241.113.73:8080/images/kullkranpiren.jpg");
+
+        createTask(
+                nyhavna,
+                4,
+                TaskType.TEXT_TASK,
+                63.44227f,
+                10.42525f,
+                "Fortsett videre langs kaia.",
+                "I planbeskrivelsen for Nyhavna nevnes det som viktig å holde kaikanter og sjøfronter tilgjengelige for allmennheten. I dette havneområdet er det foreslått å legge til rette for bading! Et annet forslag er å lage en bro fra der du står over til Kullkranpirnen.",
+                Collections.singletonList("Hva skal til for at du syntes et havneområde er en attraktiv plass å være?"),
+                null,
+                "http://129.241.113.73:8080/images/strandveikaia.jpg");
 
 //        Project testProject = new Project();
 //        testProject.setLatitude(10.304736f);
