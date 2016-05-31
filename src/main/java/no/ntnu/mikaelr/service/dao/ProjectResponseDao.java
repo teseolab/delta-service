@@ -63,12 +63,9 @@ public class ProjectResponseDao {
         query.setParameter("project", project);
         query.setParameter("user", user);
 
-        Long numberOfTasksCompleted = (Long) query.uniqueResult();
-        int numberOfTasksForProject = project.getTasks().size();
-
+        boolean isFinished = (Long) query.uniqueResult() > 0;
         session.close();
-
-        return numberOfTasksCompleted >= numberOfTasksForProject;
+        return isFinished;
     }
 
     public boolean questionIsAnswered(User user, TaskQuestion question) {

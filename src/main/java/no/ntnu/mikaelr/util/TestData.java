@@ -92,9 +92,27 @@ public class TestData {
                         Arrays.asList("Dyrke grønnsaker", "Skate", "Leke", "Grille", "Sitte på gresset", "Slikke sol", "Treffe mennesker", "Spille ball", "Kaste frisbee")),
                 "http://129.241.113.73:8080/images/kullkranpiren.jpg");
 
+        scale = Arrays.asList("Helt uenig", "Uenig", "Vet ikke", "Enig", "Helt enig");
+
         createTask(
                 nyhavna,
                 4,
+                TaskType.SCALE_TASK,
+                63.44005f,
+                10.42306f,
+                "Gå litt tilbake og til venstre etter det første røde bygget. Ta til høyre når du kommer ut til kaia. Du kan nå følge kaia langs Dora II til du når Maskingata.",
+                "Rett sør for der du står, over veien, ligger Svartlamoen. Dette er et byøkologisk område, som legger vekt på bærekraftige miljøløsninger, rimelig utleie, fellesskap og dugnad. Beboerne driver flere bedrifter på området, bla. Gratisbutikken, økologisk dagligvarehandel og kunstgalleri.\n\nHvordan stiller du deg til disse utsagnene?",
+                Arrays.asList(
+                        "Jeg kjenner godt til Svartlamoen.",
+                        "Jeg har brukt noen av tilbudene på Svartlamoen.",
+                        "Byøkologiske områder virker spennende.",
+                        "Det er viktig å tenke bærekraftig i byer."),
+                Arrays.asList(scale, scale, scale, scale),
+                "http://129.241.113.73:8080/images/svartlamoen.jpg");
+
+        createTask(
+                nyhavna,
+                5,
                 TaskType.TEXT_TASK,
                 63.44227f,
                 10.42525f,

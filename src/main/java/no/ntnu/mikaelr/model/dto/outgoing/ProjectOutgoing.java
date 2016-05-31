@@ -8,6 +8,7 @@ public class ProjectOutgoing {
     private String imageUri;
     private float latitude;
     private float longitude;
+    private boolean missionEnabled;
 
     public Integer getId() {
         return id;
@@ -55,5 +56,13 @@ public class ProjectOutgoing {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isMissionEnabled() {
+        return missionEnabled;
+    }
+
+    public void setMissionEnabled(boolean missionEnabled) {
+        this.missionEnabled = missionEnabled;
     }
 }

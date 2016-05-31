@@ -17,6 +17,7 @@ public class Project {
     private String imageUri;
     private float latitude;
     private float longitude;
+    private boolean missionEnabled;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
@@ -61,6 +62,11 @@ public class Project {
         return longitude;
     }
 
+    @Column(name = "mission_enabled")
+    public boolean isMissionEnabled() {
+        return missionEnabled;
+    }
+
     // Relation getters ------------------------------------------------------------------------------------------------
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
@@ -99,6 +105,10 @@ public class Project {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public void setMissionEnabled(boolean missionEnabled) {
+        this.missionEnabled = missionEnabled;
     }
 
     // Relation setters ------------------------------------------------------------------------------------------------

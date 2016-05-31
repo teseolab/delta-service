@@ -46,6 +46,7 @@ public class ProjectController {
             outgoingProject.setLongitude(project.getLongitude());
             outgoingProject.setDescription(project.getDescription());
             outgoingProject.setImageUri(project.getImageUri());
+            outgoingProject.setMissionEnabled(project.isMissionEnabled());
             response.add(outgoingProject);
         }
 
@@ -64,6 +65,7 @@ public class ProjectController {
         response.setLongitude(project.getLongitude());
         response.setDescription(project.getDescription());
         response.setImageUri(project.getImageUri());
+        response.setMissionEnabled(project.isMissionEnabled());
 
         return new ResponseEntity<ProjectOutgoing>(response, HttpStatus.OK);
     }
