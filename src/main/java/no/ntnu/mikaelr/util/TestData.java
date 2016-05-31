@@ -27,75 +27,120 @@ public class TestData {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
-//        Project testProject = projectDao.getProject(1);
-
-        Project testProject = new Project();
-        testProject.setLatitude(10.304736f);
-        testProject.setLongitude(63.3481f);
-        testProject.setDescription("Testprosjekt");
-        testProject.setName("Testprosjekt");
-        session.save(testProject);
+        Project nyhavna = projectDao.getProject(1);
 
         createTask(
-                testProject,
+                nyhavna,
                 0,
-                TaskType.ALTERNATIVE_TASK,
-                63.4164f,
-                10.4027f,
-                "Gå i riktig retning",
-                "Velg et alternativ for hvert spørsmål.",
-                Arrays.asList(
-                        "Hvis jeg var en fugl hadde jeg...",
-                        "Hvis jeg var en hund hadde jeg..."),
-                Arrays.asList(
-                        Arrays.asList("Flydd høyt", "Badet i en damm", "Plaget katter"),
-                        Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
-                null);
-
-        createTask(
-                testProject,
-                1,
                 TaskType.ALTERNATIVE_TASK_MULTI,
-                63.418f,
-                10.404f,
-                "Fortsett i riktig retning",
-                "Velg et eller flere alternativ for hvert spørsmål.",
-                Arrays.asList(
-                        "Hvis jeg var en fugl hadde jeg...",
-                        "Hvis jeg var en hund hadde jeg..."),
-                Arrays.asList(
-                        Arrays.asList("Flydd høyt", "Badet i en damm", "Plaget katter"),
-                        Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
-                null);
+                63.43712f,
+                10.41736f,
+                "Dra til det markerte punktet på kartet for starte oppdraget.",
+                "Du fant frem! Du står nå ved Lademoen togstasjon og er forhåpentligvis klar for en reise gjennom Nyhavna. Etter å ha svart på denne oppgaven vil du få en beskrivelse hvordan du kommer deg til neste oppgave.",
+                Collections.singletonList(
+                        "Det første vi lurer på er: hvis du skulle bo på Nyhavna, på hvilken måte hadde du foretrukket å gjøre dine daglige reiser? Velg de alternativene som passer deg."),
+                Collections.singletonList(
+                        Arrays.asList("Til fots", "Med sykkel", "Med buss", "Med scooter/moped", "Med bil", "Med båt", "Med tog")),
+                "http://129.241.113.73:8080/images/togstasjon.jpg");
 
-        List<String> scale = Arrays.asList("Helt uenig", "Uenig", "Vet ikke", "Enig", "Helt enig");
+        List<String> scale = Arrays.asList("Helt uenig", "Uenig", "Nøytral", "Enig", "Helt enig");
 
         createTask(
-                testProject,
+                nyhavna,
                 2,
                 TaskType.SCALE_TASK,
-                63.416178f,
-                10.402828f,
-                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
-                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+                63.44009f,
+                10.416f,
+                "Fortsett nordover gjennom rundkjøringen og følg Skippergata. Neste stopp er ved en stor bunker på høyre side av denne gata.",
+                "Visste du at dette er en ubåt-bunker som ble bygget under 2. verdenskrig? Bunkeren kalles Dora I og utgjør et av flere byggverk på Nyhavna som regnes å ha stor historisk verdi. Mer info om denne bunkeren og Dora II kan du finne på dora.no. Hvordan stiller du deg til disse tre spørsmålene?",
                 Arrays.asList(
-                        "Dette området kunne ha blitt mye bedre utnyttet.",
-                        "Jeg vil ha et lite skianlegg her.",
-                        "Dette er en god plass for å sette opp flere studentboliger."),
+                        "Jeg er godt kjent med de historiske byggverkene på Nyhavna.",
+                        "Det er viktig at bunkeren beholder sin ytre karakter.",
+                        "Området rundt bunkeren burde gjøres åpent for allmennheten."),
                 Arrays.asList(scale, scale, scale),
-                null);
+                "http://129.241.113.73:8080/images/dora.jpg");
 
         createTask(
-                testProject,
+                nyhavna,
                 3,
-                TaskType.TEXT_TASK,
-                63.41615f,
-                10.4027f,
-                "Gå til du blir sliten.",
-                "Dette er beskrivelse av oppgave.",
-                Collections.singletonList("Hva syntes du om dette forslaget?"),
-                null,
-                null);
+                TaskType.ALTERNATIVE_TASK_MULTI,
+                63.44209f,
+                10.42082f,
+                "", // hint
+                "Nylig ble et prosjekt for å rense sjøbunnen i havneområdet ferdigstilt. Dette innebar å grave opp forurenset sjøbunn og plassere det i såkalte deponier. Hvordan dette fungerer kan du lese mer om på renerehavn.no.", // description
+                Collections.singletonList(
+                        "Området ytterst på kaia skal etter planen gjøres om til en offentlig park. Hva kunne du tenke deg å bruke denne parken til? Du kan velge opp til flere alternativer."),
+                Collections.singletonList(
+                        Arrays.asList("Dyrke grønnsaker", "Skate", "Leke", "Grille", "Sitte på gresset", "Slikke sol", "Treffe mennesker", "Spille ball", "Kaste frisbee")),
+                "http://129.241.113.73:8080/images/kullkranpiren.jpg");
+
+//        Project testProject = new Project();
+//        testProject.setLatitude(10.304736f);
+//        testProject.setLongitude(63.3481f);
+//        testProject.setDescription("Testprosjekt");
+//        testProject.setName("Testprosjekt");
+//        session.save(testProject);
+
+//        createTask(
+//                testProject,
+//                0,
+//                TaskType.ALTERNATIVE_TASK,
+//                63.4164f,
+//                10.4027f,
+//                "Gå i riktig retning",
+//                "Velg et alternativ for hvert spørsmål.",
+//                Arrays.asList(
+//                        "Hvis jeg var en fugl hadde jeg...",
+//                        "Hvis jeg var en hund hadde jeg..."),
+//                Arrays.asList(
+//                        Arrays.asList("Flydd høyt", "Badet i en damm", "Plaget katter"),
+//                        Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
+//                null);
+//
+//        createTask(
+//                testProject,
+//                1,
+//                TaskType.ALTERNATIVE_TASK_MULTI,
+//                63.418f,
+//                10.404f,
+//                "Fortsett i riktig retning",
+//                "Velg et eller flere alternativ for hvert spørsmål.",
+//                Arrays.asList(
+//                        "Hvis jeg var en fugl hadde jeg...",
+//                        "Hvis jeg var en hund hadde jeg..."),
+//                Arrays.asList(
+//                        Arrays.asList("Flydd høyt", "Badet i en damm", "Plaget katter"),
+//                        Arrays.asList("Bjeffet", "Jaget min egen hale", "Blitt plaget av katter")),
+//                null);
+//
+//        List<String> scale = Arrays.asList("Helt uenig", "Uenig", "Vet ikke", "Enig", "Helt enig");
+//
+//        createTask(
+//                testProject,
+//                2,
+//                TaskType.SCALE_TASK,
+//                63.416178f,
+//                10.402828f,
+//                "Fortsett fremover til du når en vei, og følg deretter veien mot høyre. Du er fremme når du ser utover et stort grønt område.",
+//                "Under er noen utsagn og denne plassen. Velg hvordan du stiller deg til hvert enkelt utsagn.",
+//                Arrays.asList(
+//                        "Dette området kunne ha blitt mye bedre utnyttet.",
+//                        "Jeg vil ha et lite skianlegg her.",
+//                        "Dette er en god plass for å sette opp flere studentboliger."),
+//                Arrays.asList(scale, scale, scale),
+//                null);
+//
+//        createTask(
+//                testProject,
+//                3,
+//                TaskType.TEXT_TASK,
+//                63.41615f,
+//                10.4027f,
+//                "Gå til du blir sliten.",
+//                "Dette er beskrivelse av oppgave.",
+//                Collections.singletonList("Hva syntes du om dette forslaget?"),
+//                null,
+//                null);
 
 //        Achievement deltaker = createAchievement(Constants.ACHIEVEMENT_DELTAKER_V1, "Deltaker", "Regsitrere en bruker i Delta!", "ic_ach_deltaker_v1");
 //        createUserAchievement(mikael, deltaker);

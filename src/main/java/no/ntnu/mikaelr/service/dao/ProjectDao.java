@@ -1,9 +1,6 @@
 package no.ntnu.mikaelr.service.dao;
 
-import no.ntnu.mikaelr.model.entities.FinishedMission;
-import no.ntnu.mikaelr.model.entities.Project;
-import no.ntnu.mikaelr.model.entities.Task;
-import no.ntnu.mikaelr.model.entities.User;
+import no.ntnu.mikaelr.model.entities.*;
 import no.ntnu.mikaelr.util.Constants;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -11,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Set;
 
@@ -86,6 +84,24 @@ public class ProjectDao {
 
         session.save(finishedMission);
         session.save(user);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void deleteTasks(Integer projectId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Project project = session.get(Project.class, projectId);
+
+        Query query = session.createQuery("from Task where project = :project");
+        query.setParameter("project", project);
+        List<Task> tasks = query.list();
+
+        for (Task task : tasks) {
+            session.delete(task);
+        }
+
         session.getTransaction().commit();
         session.close();
     }

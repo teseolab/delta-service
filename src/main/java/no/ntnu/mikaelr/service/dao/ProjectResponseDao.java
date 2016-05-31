@@ -84,4 +84,19 @@ public class ProjectResponseDao {
         session.close();
         return taskIsFinished;
     }
+
+    public void deleteAllTaskResponses() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Query query = session.createQuery("from TaskResponse");
+        List<TaskResponse> taskResponses = query.list();
+
+        for (TaskResponse taskResponse : taskResponses) {
+            session.delete(taskResponse);
+        }
+
+        session.getTransaction().commit();
+        session.close();
+    }
 }

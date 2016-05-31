@@ -2,6 +2,8 @@ package no.ntnu.mikaelr.controller;
 
 import no.ntnu.mikaelr.model.dto.incoming.MissionLocationIn;
 import no.ntnu.mikaelr.model.entities.MissionLocation;
+import no.ntnu.mikaelr.service.dao.ProjectDao;
+import no.ntnu.mikaelr.service.dao.ProjectResponseDao;
 import no.ntnu.mikaelr.service.dao.SuggestionDao;
 import no.ntnu.mikaelr.service.dao.UserDao;
 import no.ntnu.mikaelr.util.TestData;
@@ -24,7 +26,13 @@ public class Controller {
     private TestData testData;
 
     @Autowired
+    private ProjectDao projectDao;
+
+    @Autowired
     private SuggestionDao suggestionDao;
+
+    @Autowired
+    private ProjectResponseDao projectResponseDao;
 
     @Autowired
     private UserDao userDao;
@@ -33,24 +41,36 @@ public class Controller {
     private SessionFactory sessionFactory;
 
     @PreAuthorize(value="hasAuthority('ADMIN')")
-    @RequestMapping(value = "/suggestions/{suggestionId}/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/suggestions/{suggestionId}/delete", method = RequestMethod.PUT)
     public void deleteSuggestion(@PathVariable Integer suggestionId) {
         suggestionDao.deleteSuggestion(suggestionId);
     }
 
     @PreAuthorize(value="hasAuthority('ADMIN')")
-    @RequestMapping(value = "/users/{userId}/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/projects/{projectId}/tasks/delete", method = RequestMethod.PUT)
+    public void deleteTasks(@PathVariable Integer projectId) {
+        projectDao.deleteTasks(projectId);
+    }
+
+    @PreAuthorize(value="hasAuthority('ADMIN')")
+    @RequestMapping(value = "/responses/delete", method = RequestMethod.PUT)
+    public void deleteTaskResponses() {
+        projectResponseDao.deleteAllTaskResponses();
+    }
+
+    @PreAuthorize(value="hasAuthority('ADMIN')")
+    @RequestMapping(value = "/users/{userId}/delete", method = RequestMethod.PUT)
     public void deleteUser(@PathVariable Integer userId) {
         userDao.deleteUser(userId);
     }
 
-    @RequestMapping(value = "/createAdmin", method = RequestMethod.GET)
+    @RequestMapping(value = "/createAdmin", method = RequestMethod.POST)
     public void createAdmin() {
         testData.createAdmin();
     }
 
     @PreAuthorize(value="hasAuthority('ADMIN')")
-    @RequestMapping(value = "/createTestData", method = RequestMethod.GET)
+    @RequestMapping(value = "/createTestData", method = RequestMethod.POST)
     public void createTestData() {
         testData.initializeTestData();
     }

@@ -12,6 +12,7 @@ public class TaskQuestion {
     private List<String> alternatives;
 
     private Task task;
+    private List<TaskResponse> taskResponses;
 
     public TaskQuestion() {}
 
@@ -40,6 +41,11 @@ public class TaskQuestion {
         return task;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
+    public List<TaskResponse> getTaskResponses() {
+        return taskResponses;
+    }
+
     public void setQuestionId(Integer questionId) {
         this.questionId = questionId;
     }
@@ -54,5 +60,9 @@ public class TaskQuestion {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public void setTaskResponses(List<TaskResponse> taskResponses) {
+        this.taskResponses = taskResponses;
     }
 }

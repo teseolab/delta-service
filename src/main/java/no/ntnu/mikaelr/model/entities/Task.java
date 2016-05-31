@@ -21,11 +21,11 @@ public class Task {
     private float longitude;
     private String hint;
     private String description;
-    private List<TaskQuestion> questions;
 
     // Relations -------------------------------------------------------------------------------------------------------
 
     private Project project;
+    private List<TaskQuestion> questions;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ public class Task {
         return hint;
     }
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar(600)")
     public String getDescription() {
         return description;
     }
@@ -84,7 +84,7 @@ public class Task {
         return project;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "task")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "task", cascade = CascadeType.ALL)
     public List<TaskQuestion> getQuestions() {
         return questions;
     }

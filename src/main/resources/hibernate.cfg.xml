@@ -6,10 +6,10 @@
 <hibernate-configuration>
     <session-factory>
 
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-        <!--<property name="hibernate.connection.url">jdbc:postgresql://129.241.113.73:5432/delta-db</property>-->
+        <!--<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>-->
+        <property name="hibernate.connection.url">jdbc:postgresql://129.241.113.73:5432/delta-db</property>
 
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">postgres</property>
